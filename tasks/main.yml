@@ -1,0 +1,16 @@
+---
+
+# Copyright (c) 2017 Kabolt
+# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+# OS support verification
+- name: Check OS support
+  fail:
+    msg: "Unsupported OS for docker role. Currently supported : Debian 9"
+  when: ansible_os_family != "Debian" and ansible_distribution_major_version == "9"
+  tags: always
+
+# Install
+- name: Static import of install
+  import_tasks: install.yml
+  tags: haproxy_install
