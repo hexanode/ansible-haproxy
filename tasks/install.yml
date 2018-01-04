@@ -1,2 +1,16 @@
 ---
 
+# Install HaProxy package from debian stable repository
+- name: Install required HaProxy package
+  apt:
+    name: haproxy
+    state: present
+    update_cache: yes
+    install_recommends: no
+    cache_valid_time: 604800
+
+- name: Ensure HaProxy is started and enabled at boot.
+  service:
+    name: haproxy
+    state: started
+    enabled: yes
