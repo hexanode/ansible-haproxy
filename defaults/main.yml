@@ -1,6 +1,9 @@
 ---
 
 #######################################
-## Default variables for haproxy role #
+## Default variables for HAProxy role #
 #######################################
 
+# User & Group for HAProxy
+haproxy_user: haproxy
+haproxy_group: haproxy

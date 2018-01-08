@@ -1,6 +1,6 @@
 galaxy_info:
   author: "Maximilien Douchet"
-  description: "Ansible role that install and configure haproxy Debian Stretch"
+  description: "Ansible role that install and configure HAProxy Debian Stretch"
   company: "Kabolt"
   license: "license GPLv3"
   min_ansible_version: 2.4
