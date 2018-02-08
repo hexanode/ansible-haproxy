@@ -4,6 +4,9 @@
 ## Default variables for HAProxy role #
 #######################################
 
+# Security
+haproxy_chroot: '/var/lib/haproxy'
+
 # User & Group for HAProxy
 haproxy_user: haproxy
 haproxy_group: haproxy

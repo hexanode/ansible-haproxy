@@ -23,9 +23,13 @@ Available variables with defaults values are defined in `defaults/main.yml`.
 Modifiables variables and possible values are listed below :
 
 ```
+# Security
+haproxy_chroot: '/var/lib/haproxy'
+
 # User & Group for HAProxy
 haproxy_user: haproxy
 haproxy_group: haproxy
+
 ```
 
 ## Dependencies
