@@ -5,7 +5,7 @@ global
         chroot {{ haproxy_chroot }}
     {% endif -%}
     stats socket /run/haproxy/admin.sock mode 660 level admin
-    stats timeout 30s
+    stats timeout 10s
     user {{ haproxy_user }}
     group {{ haproxy_group }}
     daemon
@@ -35,3 +35,25 @@ defaults
     errorfile 502 /etc/haproxy/errors/502.http
     errorfile 503 /etc/haproxy/errors/503.http
     errorfile 504 /etc/haproxy/errors/504.http
+
+{% if haproxy_webstats -%}
+listen stats {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }}
+    mode            http
+    log             global
+
+    maxconn         {{ haproxy_webstats_maxconn }}
+
+    clitimeout      100s
+    srvtimeout      100s
+    contimeout      100s
+    timeout queue   100s
+
+    stats enable
+    stats hide-version
+    {% if haproxy_webstats_refreshtime != '' -%}
+        stats refresh {{ haproxy_webstats_refreshtime }}
+    {% endif -%}
+    stats show-node
+    stats auth {{ haproxy_webstats_username }}:{{ haproxy_webstats_password }}
+    stats uri  {{ haproxy_webstats_uri }}
+{% endif %}
