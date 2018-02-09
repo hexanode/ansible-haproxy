@@ -20,3 +20,9 @@ haproxy_webstats_refreshtime: '30s'
 haproxy_webstats_username: 'admin'
 haproxy_webstats_password: 'password'
 haproxy_webstats_uri: '/haproxy?stats'
+
+# Frontends
+haproxy_frontends_list: []
+
+# Backends
+haproxy_backends_list: []
