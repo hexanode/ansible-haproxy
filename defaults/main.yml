@@ -12,6 +12,8 @@ haproxy_user: haproxy
 haproxy_group: haproxy
 
 # Web Stats
+
+# Set to true in order to enable webstats. (default is false)
 haproxy_webstats: false
 haproxy_webstats_ip: '0.0.0.0'
 haproxy_webstats_port: '8080'

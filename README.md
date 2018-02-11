@@ -30,6 +30,25 @@ haproxy_chroot: '/var/lib/haproxy'
 haproxy_user: haproxy
 haproxy_group: haproxy
 
+# Web Stats
+
+# Set to true in order to enable webstats. (default is false)
+haproxy_webstats: false
+haproxy_webstats_ip: '0.0.0.0'
+haproxy_webstats_port: '8080'
+haproxy_webstats_maxconn: '10'
+haproxy_webstats_refreshtime: '30s'
+haproxy_webstats_username: 'admin'
+haproxy_webstats_password: 'password'
+haproxy_webstats_uri: '/haproxy?stats'
+
+# Frontends
+haproxy_frontends_list: []
+
+# Backends
+haproxy_backends_list: []
+
+
 ```
 
 ## Dependencies
