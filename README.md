@@ -56,6 +56,52 @@ haproxy_backends_list: []
 none
 
 
+## Frontends Syntax
+
+{% for frontend in haproxy_frontends_list %}
+frontend {{ frontend.name }}
+    bind {{ frontend.bind }}:{{ frontend.port }}
+    mode {% if frontend.mode is not defined %} http {%- else %} {{ frontend.mode }} {%- endif %}
+    default_backend {{ frontend.default_backend }}
+{% endfor %}
+
+Here is a recap of all possible values for firewall_filter_rules & for role rules.
+
+| Option           | Role                            | Default value | Possible values                     |
+|------------------|---------------------------------|:-------------:|-------------------------------------|
+| name             | Frontend Name                   |      none     | String                              |
+| bind             | Bind frontend with interface    |      none     | * (any), any IP Adress              |
+| port             | Bind frontend with a port on if |      none     | any port number 1-65535             |
+| mode             | Protocol used for frontend      |      http     | tcp, http, health                   |
+| default_backend  | Default backend used            |      none     | String                              |
+
+**Note :**
+- If you omit an option the default will be used.
+
+The syntax is a bit flexible, per example you can use the following syntax.
+
+```
+[
+    { name: 'default', bind: '*', port: '80', default_backend: 'www' },
+    { name: 'example', bind: '93.184.216.34', port: '8080', default_backend: 'example_backend' }
+]
+```
+
+This will be respectively translated to :
+
+```
+frontend default
+    bind *:80
+    mode http
+    default_backend www
+
+frontend example
+    bind 93.184.216.34:8080
+    mode http
+    default_backend example_backend
+```
+
+
 ## Example Playbook
 
 How to use the role in your ansible playbook.
