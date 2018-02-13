@@ -65,7 +65,8 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | name             | Frontend Name                   |      none     | String                              |
 | bind             | Bind frontend with interface    |      none     | * (any), any IP Adress              |
 | port             | Bind frontend with a port on if |      none     | any port number 1-65535             |
-| mode             | Protocol used for frontend      |      http     | tcp, http, health                   |
+| mode             | Protocol used for the instance  |      http     | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| options          | List of options                 |      none     | All options available for frontend  |
 | default_backend  | Default backend used            |      none     | String                              |
 
 **Note :**
@@ -75,8 +76,8 @@ The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
 [
-    { name: 'default', bind: '*', port: '80', default_backend: 'www' },
-    { name: 'example', bind: '93.184.216.34', port: '8080', default_backend: 'example_backend' }
+    { name: 'default', bind: '*', port: '80', options: [], default_backend: 'www' },
+    { name: 'example', bind: '93.184.216.34', port: '8080', options: [], default_backend: 'example_backend' }
 ]
 ```
 
@@ -99,14 +100,14 @@ frontend example
 
 Here is a recap of all possible values for haproxy_backends in haproxy_backends_list.
 
-| Option              | Role                            | Default value | Possible values                     |
-|---------------------|---------------------------------|:-------------:|-------------------------------------|
-| name                | Frontend Name                   |      none     | String                              |
-| mode                | Protocol used for frontend      |      http     | tcp, http, health                   |
-| balance             | Algorithm used to load balance  |      none     | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
-| forwardfor          | Add http header X-Forwarded-For |      true     | boolean                             |
-| httpchck            | Bind frontend with a port on if |      none     | String                              |
-| backend_server_list | List of backend servers         |      none     | See backend_server syntax guide     |
+| Option              | Role                                  | Default value | Possible values                     |
+|---------------------|---------------------------------------|:-------------:|-------------------------------------|
+| name                | Frontend Name                         |      none     | String                              |
+| mode                | Protocol used for the instance        |      http     | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| balance             | Algorithm used to load balance        |      none     | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
+| options             | List of options                       |      none     | All backend options (name, value)   |
+| noforwardfor        | Don't add http header X-Forwarded-For |      false    | boolean                             |
+| backend_server_list | List of backend servers               |      none     | See backend_server syntax guide     |
 
 **Note :**
 - If you omit an option the default will be used.
@@ -115,7 +116,7 @@ The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
 [
-    { name: 'default_backend', balance: 'roundrobin', backend_server_list: [] }
+    { name: 'default_backend', balance: 'roundrobin', options: [ {name: 'tcp-check', value: '' } ], backend_server_list: [] }
 ]
 ```
 
@@ -125,8 +126,9 @@ This will be respectively translated to :
 backend default_backend
     mode http
     balance roundrobin
-    option forwardfor
     cookie SERVERID insert indirect
+    option tcp-check
+    option forwardfor
 ```
 
 

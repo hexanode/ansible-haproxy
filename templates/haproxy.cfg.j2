@@ -63,22 +63,28 @@ frontend {{ frontend.name }}
     bind {{ frontend.bind }}:{{ frontend.port }}
     mode {%- if frontend.mode is not defined %} http {%- else %} {{ frontend.mode }} {% endif %}
 
+    {% for option in frontend.options -%}
+        option {{ option.name }} {{ option.value }}
+    {% endfor -%}
     default_backend {{ frontend.default_backend }}
 
 {% endfor %}
 
 {% for backend in haproxy_backends_list %}
 backend {{ backend.name }}
-    mode {%- if frontend.mode is not defined %} http {%- else %} {{ frontend.mode }} {% endif %}
+    mode {%- if backend.mode is not defined %} http {%- else %} {{ backend.mode }} {% endif %}
 
     balance {{ backend.balance }}
-    option forwardfor
-    {% if backend.httpchck != '' -%}
-        option httpchk {{ backend.httpchck }}
-    {% endif -%}
     cookie SERVERID insert indirect
+    {% for option in backend.options -%}
+        option {{ option.name }} {{ option.value }}
+    {% endfor -%}
+    {% if backend.noforwardfor is not defined -%}
+        option forwardfor
+    {% endif -%}
     {% for backend_server in backend.backend_server_list -%}
         server {{ backend_server.name }} {{ backend_server.address }} cookie {{ backend_server.name }} check
     {% endfor -%}
+
 
 {% endfor %}
