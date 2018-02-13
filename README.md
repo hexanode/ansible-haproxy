@@ -58,14 +58,7 @@ none
 
 ## Frontends Syntax
 
-{% for frontend in haproxy_frontends_list %}
-frontend {{ frontend.name }}
-    bind {{ frontend.bind }}:{{ frontend.port }}
-    mode {% if frontend.mode is not defined %} http {%- else %} {{ frontend.mode }} {%- endif %}
-    default_backend {{ frontend.default_backend }}
-{% endfor %}
-
-Here is a recap of all possible values for firewall_filter_rules & for role rules.
+Here is a recap of all possible values for haproxy_frontends in haproxy_frontends_list.
 
 | Option           | Role                            | Default value | Possible values                     |
 |------------------|---------------------------------|:-------------:|-------------------------------------|
@@ -99,6 +92,41 @@ frontend example
     bind 93.184.216.34:8080
     mode http
     default_backend example_backend
+```
+
+
+## Backends Syntax
+
+Here is a recap of all possible values for haproxy_backends in haproxy_backends_list.
+
+| Option              | Role                            | Default value | Possible values                     |
+|---------------------|---------------------------------|:-------------:|-------------------------------------|
+| name                | Frontend Name                   |      none     | String                              |
+| mode                | Protocol used for frontend      |      http     | tcp, http, health                   |
+| balance             | Algorithm used to load balance  |      none     | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
+| forwardfor          | Add http header X-Forwarded-For |      true     | boolean                             |
+| httpchck            | Bind frontend with a port on if |      none     | String                              |
+| backend_server_list | List of backend servers         |      none     | See backend_server syntax guide     |
+
+**Note :**
+- If you omit an option the default will be used.
+
+The syntax is a bit flexible, per example you can use the following syntax.
+
+```
+[
+    { name: 'default_backend', balance: 'roundrobin', backend_server_list: [] }
+]
+```
+
+This will be respectively translated to :
+
+```
+backend default_backend
+    mode http
+    balance roundrobin
+    option forwardfor
+    cookie SERVERID insert indirect
 ```
 
 
