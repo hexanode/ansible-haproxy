@@ -1,4 +1,4 @@
-# Ansible Role: Firewall
+# Ansible Role: HAProxy
 
 An Ansible Role that installs iptables and configure HAProxy.
 
