@@ -43,9 +43,9 @@ listen stats {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }}
 
     maxconn         {{ haproxy_webstats_maxconn }}
 
-    clitimeout      100s
-    srvtimeout      100s
-    contimeout      100s
+    timeout client  100s
+    timeout server  100s
+    timeout connect 100s
     timeout queue   100s
 
     stats enable
