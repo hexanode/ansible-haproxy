@@ -86,8 +86,7 @@ backend {{ backend.name }}
         option forwardfor
     {% endif -%}
     {% for backend_server in backend.backend_server_list -%}
-        server {{ backend_server.name }} {{ backend_server.address }} cookie {{ backend_server.name }} check
+        server {{ backend_server.name }} {{ backend_server.address }}:{{ backend_server.port }}
     {% endfor -%}
-
 
 {% endfor %}

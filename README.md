@@ -132,6 +132,17 @@ backend default_backend
 ```
 
 
+## Backend Server Syntax
+
+Here is a recap of all possibles values for backend_server in backend_server_list in haproxy_backends configuration
+
+| Option              | Role                                  | Default value | Possible values                     |
+|---------------------|---------------------------------------|:-------------:|-------------------------------------|
+| name                | Frontend Name                         |      none     | String                              |
+| address             | IP Address of backend server          |      none     | Single IP                           |
+| port                | Port number of backend server         |      none     | Port Number                         |
+
+
 ## Example Playbook
 
 How to use the role in your ansible playbook.
