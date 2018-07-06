@@ -37,10 +37,11 @@ defaults
     errorfile 504 /etc/haproxy/errors/504.http
 
 {% if haproxy_webstats -%}
-listen stats {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }}
+
+listen stats
+    bind            {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }}
     mode            http
     log             global
-
     maxconn         {{ haproxy_webstats_maxconn }}
 
     timeout client  100s
@@ -53,6 +54,8 @@ listen stats {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }}
     {% if haproxy_webstats_refreshtime != '' -%}
         stats refresh {{ haproxy_webstats_refreshtime }}
     {% endif -%}
+    # stats scope .
+    status realm HAProxy\ Statistics
     stats show-node
     stats auth {{ haproxy_webstats_username }}:{{ haproxy_webstats_password }}
     stats uri  {{ haproxy_webstats_uri }}
