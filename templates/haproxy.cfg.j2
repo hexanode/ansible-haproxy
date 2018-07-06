@@ -64,7 +64,7 @@ listen stats
 {% for frontend in haproxy_frontends_list %}
 frontend {{ frontend.name }}
     bind {{ frontend.bind }}:{{ frontend.port }}
-    mode {%- if frontend.mode is not defined %} http {%- else %} {{ frontend.mode }} {% endif %}
+    mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
 
     {% for option in frontend.options -%}
         option {{ option.name }} {{ option.value }}
@@ -75,7 +75,7 @@ frontend {{ frontend.name }}
 
 {% for backend in haproxy_backends_list %}
 backend {{ backend.name }}
-    mode {%- if backend.mode is not defined %} http {%- else %} {{ backend.mode }} {% endif %}
+    mode {%- if backend.mode is not defined %} tcp {%- else %} {{ backend.mode }} {% endif %}
 
     balance {{ backend.balance }}
     cookie SERVERID insert indirect

@@ -64,7 +64,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | name             | Frontend Name                   |      none     | String                              |
 | bind             | Bind frontend with interface    |      none     | * (any), any IP Adress              |
 | port             | Bind frontend with a port on if |      none     | any port number 1-65535             |
-| mode             | Protocol used for the instance  |      http     | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| mode             | Protocol used for the instance  |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | options          | List of options                 |      none     | All options available for frontend  |
 | default_backend  | Default backend used            |      none     | String                              |
 
@@ -102,7 +102,7 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 | Option              | Role                                  | Default value | Possible values                     |
 |---------------------|---------------------------------------|:-------------:|-------------------------------------|
 | name                | Frontend Name                         |      none     | String                              |
-| mode                | Protocol used for the instance        |      http     | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| mode                | Protocol used for the instance        |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | balance             | Algorithm used to load balance        |      none     | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
 | options             | List of options                       |      none     | All backend options (name, value)   |
 | noforwardfor        | Don't add http header X-Forwarded-For |      false    | boolean                             |
