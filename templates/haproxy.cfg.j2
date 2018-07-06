@@ -87,6 +87,7 @@ backend {{ backend.name }}
     {% endif -%}
     {% for backend_server in backend.backend_server_list -%}
         server {{ backend_server.name }} {{ backend_server.address }}:{{ backend_server.port }}
-    {% endfor -%}
+            {%- if backend_server.maxconn is defined %} maxconn {{ backend_server.maxconn }} {% endif %}
 
+    {% endfor -%}
 {% endfor %}
