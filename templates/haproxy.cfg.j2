@@ -55,7 +55,7 @@ listen stats
         stats refresh {{ haproxy_webstats_refreshtime }}
     {% endif -%}
     # stats scope .
-    stats realm HAProxy\ Statistics
+    stats realm {{ haproxy_webstats_realm }}
     stats show-node
     stats auth {{ haproxy_webstats_username }}:{{ haproxy_webstats_password }}
     stats uri  {{ haproxy_webstats_uri }}
