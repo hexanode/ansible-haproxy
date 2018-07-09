@@ -75,10 +75,8 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
-[
-    { name: 'default', bind: '*', port: '80', options: [], default_backend: 'www' },
-    { name: 'example', bind: '93.184.216.34', port: '8080', options: [], default_backend: 'example_backend' }
-]
+- { name: 'default', bind: '*', port: '80', options: [], default_backend: 'www' },
+- { name: 'example', bind: '93.184.216.34', port: '8080', options: [], default_backend: 'example_backend' }
 ```
 
 This will be respectively translated to :
@@ -100,14 +98,15 @@ frontend example
 
 Here is a recap of all possible values for haproxy_backends in haproxy_backends_list.
 
-| Option              | Role                                 | Default value  | Possible values                     |
-|---------------------|--------------------------------------|:--------------:|-------------------------------------|
-| name                | Frontend Name                        |      none      | String                              |
-| cookie              | Cookie definition for backend        |      none      | See Backend Cookie Syntax guide     |
-| mode                | Protocol used for the instance       |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
-| balance             | Algorithm used to load balance       |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
-| options             | List of options                      |      none      | All options available for backtend  |
-| backend_server_list | List of backend servers              |      none      | See Backend Server Syntax guide     |
+| Option              | Role                                    | Default value  | Possible values                    |
+|---------------------|-----------------------------------------|:--------------:|------------------------------------|
+| name                | Frontend Name                           |      none      | String                             |
+| check_all_servers   | Manage check by default for all servers |      none      | Boolean (true\|false)              |
+| cookie              | Cookie definition for backend           |      none      | See Backend Cookie Syntax guide    |
+| mode                | Protocol used for the instance          |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| balance             | Algorithm used to load balance          |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
+| options             | List of options                         |      none      | All options available for backtend |
+| backend_server_list | List of backend servers                 |      none      | See Backend Server Syntax guide    |
 
 **Note :**
 - If an option is omitted the default (if any) will be used.
@@ -116,17 +115,18 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
-- name: 'www'
-  comment: 'HTTP Web backend for my app'
-  mode: 'http'
-  balance: 'roundrobin'
-  options:
-    - tcp-check
-    - forwardfor
-  cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
-  backend_server_list:
-    - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
-    - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
+name: 'www'
+comment: 'HTTP Web backend for my app'
+mode: 'http'
+balance: 'roundrobin'
+options:
+  - tcp-check
+  - forwardfor
+check_all_servers: true
+cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
+backend_server_list:
+  - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
+  - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
 ```
 
 This will be respectively translated to :
@@ -139,8 +139,8 @@ backend www
     cookie ServID insert indirect
     option tcp-check
     option forwardfor
-    server web1 216.58.213.131:80 weight 10
-    server web2 216.58.204.110:80 maxconn 256
+    server web1 216.58.213.131:80 weight 10 cookie web1 check
+    server web2 216.58.204.110:80 maxconn 256 cookie web2 check
 ```
 
 
@@ -152,6 +152,7 @@ Here is a recap of all possibles values for cookie
 |---------------|-------------------------------------|:-------------:|-----------------------------|
 | name          | Cookie Name                         |      none     | String                      |
 | mode          | Cookie Mode                         |      none     | rewrite \| insert \| prefix |
+| check         | Manage check for this server (This override the check_all_servers in backend) | none | Boolean (true\|false) |
 | options       | Option for cookie-based persistence |      none     | [Cookie](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-cookie) |
 
 

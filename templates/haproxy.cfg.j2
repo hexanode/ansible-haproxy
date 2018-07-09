@@ -99,7 +99,8 @@ backend {{ backend.name }}
         server {{ backend_server.name }} {{ backend_server.address }}:{{ backend_server.port }}
             {%- if backend_server.weight is defined %} weight {{ backend_server.weight }} {%- endif %}
             {%- if backend_server.maxconn is defined %} maxconn {{ backend_server.maxconn }} {%- endif %}
-            {%- if backend.cookie is defined %} cookie {%- if backend_server.cookie is defined %} {{ backend_server.cookie }} {% else %} {{ backend_server.name }} {% endif %} {%- endif %}
+            {%- if backend.cookie is defined %} cookie {%- if backend_server.cookie is defined %} {{ backend_server.cookie }} {%- else %} {{ backend_server.name }} {%- endif %} {%- endif %}
+            {%- if ( backend_server.check is defined and backend_server.check|bool ) or ( backend.check_all_servers is defined and backend_server.check is undefined and backend.check_all_servers|bool ) %} check {%- endif %}
             {%- if backend_server.custom is defined %} {{ backend_server.custom }} {%- endif %}
 
     {% endfor -%}
