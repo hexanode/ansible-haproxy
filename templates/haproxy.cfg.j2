@@ -64,6 +64,9 @@ listen stats
 
 {% for frontend in haproxy_frontends_list %}
 frontend {{ frontend.name }}
+    {% if frontend.comment is defined -%}
+    # {{ frontend.comment }}
+    {% endif -%}
     bind {{ frontend.bind }}:{{ frontend.port }}
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
 
@@ -76,6 +79,10 @@ frontend {{ frontend.name }}
 
 {% for backend in haproxy_backends_list %}
 backend {{ backend.name }}
+    {% if backend.comment is defined -%}
+    # {{ backend.comment }}
+    {% endif -%}
+
     mode {%- if backend.mode is not defined %} tcp {%- else %} {{ backend.mode }} {% endif %}
 
     balance {{ backend.balance }}

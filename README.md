@@ -62,6 +62,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | Option           | Role                            | Default value | Possible values                     |
 |------------------|---------------------------------|:-------------:|-------------------------------------|
 | name             | Frontend Name                   |      none     | String                              |
+| comment          | A comment escaped for HAProxy   |      none     | String                              |
 | bind             | Bind frontend with interface    |      none     | * (any), any IP Adress              |
 | port             | Bind frontend with a port on if |      none     | any port number 1-65535             |
 | mode             | Protocol used for the instance  |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
@@ -138,6 +139,7 @@ Here is a recap of all possibles values for backend_server in backend_server_lis
 | Option              | Role                                        | Default value | Possible values           |
 |---------------------|---------------------------------------------|:-------------:|---------------------------|
 | name                | Frontend Name                               |      none     | String                    |
+| comment             | A comment escaped for HAProxy               |      none     | String                    |
 | address             | IP Address of backend server                |      none     | Single IP                 |
 | port                | Port number of backend server               |      none     | Port Number               |
 | maxconn             | Maximum number of concurrent connections    |      none     | Number                    |
