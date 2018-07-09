@@ -85,10 +85,10 @@ backend {{ backend.name }}
 
     mode {%- if backend.mode is not defined %} tcp {%- else %} {{ backend.mode }} {% endif %}
 
-    balance {{ backend.balance }}
-    cookie SERVERID insert indirect
+    balance {% if backend.balance is not defined %} roundrobin {% else %} {{ backend.balance }} {% endif %}
+
     {% for option in backend.options -%}
-        option {{ option.name }} {{ option.value }}
+        option {{ option }}
     {% endfor -%}
     {% if backend.noforwardfor is not defined -%}
         option forwardfor

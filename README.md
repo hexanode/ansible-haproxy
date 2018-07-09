@@ -70,7 +70,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | default_backend  | Default backend used            |      none     | String                              |
 
 **Note :**
-- If you omit an option the default will be used.
+- If you omit a value the default (if any) will be used.
 
 The syntax is a bit flexible, per example you can use the following syntax.
 
@@ -100,23 +100,22 @@ frontend example
 
 Here is a recap of all possible values for haproxy_backends in haproxy_backends_list.
 
-| Option              | Role                                  | Default value | Possible values                     |
-|---------------------|---------------------------------------|:-------------:|-------------------------------------|
-| name                | Frontend Name                         |      none     | String                              |
-| mode                | Protocol used for the instance        |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
-| balance             | Algorithm used to load balance        |      none     | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
-| options             | List of options                       |      none     | All backend options (name, value)   |
-| noforwardfor        | Don't add http header X-Forwarded-For |      false    | boolean                             |
-| backend_server_list | List of backend servers               |      none     | See backend_server syntax guide     |
+| Option              | Role                                 | Default value  | Possible values                     |
+|---------------------|--------------------------------------|:--------------:|-------------------------------------|
+| name                | Frontend Name                        |      none      | String                              |
+| mode                | Protocol used for the instance       |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| balance             | Algorithm used to load balance       |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
+| options             | List of options                      |      none      | All options available for backtend  |
+| backend_server_list | List of backend servers              |      none      | See backend_server syntax guide     |
 
 **Note :**
-- If you omit an option the default will be used.
+- If you omit an option the default (if any) will be used.
 
 The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
 [
-    { name: 'default_backend', balance: 'roundrobin', options: [ {name: 'tcp-check', value: '' } ], backend_server_list: [] }
+    { name: 'default_backend', balance: 'roundrobin', options: [ 'tcp-check', 'forwardfor' ], backend_server_list: [] }
 ]
 ```
 
@@ -124,9 +123,8 @@ This will be respectively translated to :
 
 ```
 backend default_backend
-    mode http
+    mode tcp
     balance roundrobin
-    cookie SERVERID insert indirect
     option tcp-check
     option forwardfor
 ```
