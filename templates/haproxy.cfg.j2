@@ -92,9 +92,6 @@ backend {{ backend.name }}
     {% for option in backend.options -%}
         option {{ option }}
     {% endfor -%}
-    {% if backend.noforwardfor is not defined -%}
-        option forwardfor
-    {% endif -%}
     {% for backend_server in backend.backend_server_list -%}
         server {{ backend_server.name }} {{ backend_server.address }}:{{ backend_server.port }}
             {%- if backend_server.weight is defined %} weight {{ backend_server.weight }} {%- endif %}
