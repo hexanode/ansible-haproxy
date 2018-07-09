@@ -50,6 +50,7 @@ listen stats
     timeout queue   100s
 
     stats enable
+    stats admin {{ haproxy_webstats_admin_opt }}
     stats hide-version
     {% if haproxy_webstats_refreshtime != '' -%}
         stats refresh {{ haproxy_webstats_refreshtime }}
