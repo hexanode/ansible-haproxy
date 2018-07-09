@@ -139,9 +139,10 @@ Here is a recap of all possibles values for backend_server in backend_server_lis
 | name          | Frontend Name                                |      none     | String             |
 | address       | IP Address of backend server                 |      none     | Single IP          |
 | comment       | A comment escaped for HAProxy                |      none     | String             |
+| custom        | Any custom option not yet available with var |      none     | Any HAP option     |
 | maxconn       | Maximum number of concurrent connections     |      none     | Number             |
 | port          | Port number of backend server                |      none     | Port Number        |
-| weight  | Load is proportional to their weight relative to the sum of all weights | none | Number |
+| weight  | Load is proportional to their weight relative to the sum of all weights | 1 | 0-256 [Weight](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.2-weight) |
 
 
 ## Example Playbook
