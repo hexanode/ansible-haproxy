@@ -114,19 +114,31 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
-[
-    { name: 'default_backend', balance: 'roundrobin', options: [ 'tcp-check', 'forwardfor' ], backend_server_list: [] }
-]
+- name: 'www'
+  comment: 'HTTP Web backend for my app'
+  mode: 'http'
+  balance: 'roundrobin'
+  options:
+    - tcp-check
+    - forwardfor
+  cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
+  backend_server_list:
+    - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
+    - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
 ```
 
 This will be respectively translated to :
 
 ```
-backend default_backend
-    mode tcp
-    balance roundrobin
+backend www
+    # HTTP Web backend for my app
+    mode http
+    balance  roundrobin
+    cookie ServID insert indirect
     option tcp-check
     option forwardfor
+    server web1 216.58.213.131:80 weight 10
+    server web2 216.58.204.110:80 maxconn 256
 ```
 
 
