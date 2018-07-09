@@ -134,13 +134,14 @@ backend default_backend
 
 Here is a recap of all possibles values for backend_server in backend_server_list in haproxy_backends configuration
 
-| Option              | Role                                        | Default value | Possible values           |
-|---------------------|---------------------------------------------|:-------------:|---------------------------|
-| name                | Frontend Name                               |      none     | String                    |
-| comment             | A comment escaped for HAProxy               |      none     | String                    |
-| address             | IP Address of backend server                |      none     | Single IP                 |
-| port                | Port number of backend server               |      none     | Port Number               |
-| maxconn             | Maximum number of concurrent connections    |      none     | Number                    |
+| Option        | Role                                         | Default value | Possible values    |
+|---------------|----------------------------------------------|:-------------:|--------------------|
+| name          | Frontend Name                                |      none     | String             |
+| address       | IP Address of backend server                 |      none     | Single IP          |
+| comment       | A comment escaped for HAProxy                |      none     | String             |
+| maxconn       | Maximum number of concurrent connections     |      none     | Number             |
+| port          | Port number of backend server                |      none     | Port Number        |
+| weight  | Load is proportional to their weight relative to the sum of all weights | none | Number |
 
 
 ## Example Playbook
