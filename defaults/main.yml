@@ -12,7 +12,6 @@ haproxy_user:  haproxy
 haproxy_group: haproxy
 
 # Web Stats
-
 haproxy_webstats: false                         # Set to true in order to enable webstats. (default is false)
 haproxy_webstats_ip: '0.0.0.0'                  # Listening IP for the webstats interface
 haproxy_webstats_port: '8080'                   # Listening Port for the webstats interface
@@ -23,6 +22,7 @@ haproxy_webstats_username: 'admin'              # Authentication Username
 haproxy_webstats_password: 'password'           # Authentication Password
 haproxy_webstats_uri: '/haproxy?stats'          # Authentication URL
 haproxy_webstats_admin_opt: 'if FALSE'          # Manage admin level if/unless a condition is matched (ex: if TRUE / if LOCALHOST)
+# haproxy_webstats_scope: '.'                   # Scope for this webstat interface
 
 # Frontends
 haproxy_frontends_list: []

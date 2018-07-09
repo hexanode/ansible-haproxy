@@ -55,7 +55,9 @@ listen stats
     {% if haproxy_webstats_refreshtime != '' -%}
         stats refresh {{ haproxy_webstats_refreshtime }}
     {% endif -%}
-    # stats scope .
+    {% if haproxy_webstats_scope is defined -%}
+    stats scope {{ haproxy_webstats_scope }}
+    {% endif -%}
     stats realm {{ haproxy_webstats_realm }}
     stats show-node
     stats auth {{ haproxy_webstats_username }}:{{ haproxy_webstats_password }}
