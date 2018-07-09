@@ -73,7 +73,7 @@ frontend {{ frontend.name }}
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
 
     {% for option in frontend.options -%}
-        option {{ option.name }} {{ option.value }}
+        option {{ option }}
     {% endfor -%}
     default_backend {{ frontend.default_backend }}
 
