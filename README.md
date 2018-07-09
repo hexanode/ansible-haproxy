@@ -103,13 +103,15 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 | Option              | Role                                 | Default value  | Possible values                     |
 |---------------------|--------------------------------------|:--------------:|-------------------------------------|
 | name                | Frontend Name                        |      none      | String                              |
+| cookie              | Cookie definition for backend        |      none      | See Backend Cookie Syntax guide     |
 | mode                | Protocol used for the instance       |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | balance             | Algorithm used to load balance       |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
 | options             | List of options                      |      none      | All options available for backtend  |
-| backend_server_list | List of backend servers              |      none      | See backend_server syntax guide     |
+| backend_server_list | List of backend servers              |      none      | See Backend Server Syntax guide     |
 
 **Note :**
-- If you omit an option the default (if any) will be used.
+- If an option is omitted the default (if any) will be used.
+- If the cookie option is defined this will automaticaly enable the cookie param for each backend server (See Backend Server Syntax guide)
 
 The syntax is a bit flexible, per example you can use the following syntax.
 
@@ -142,19 +144,31 @@ backend www
 ```
 
 
-## Backend Server Syntax
+### Backend Cookie Syntax
+
+Here is a recap of all possibles values for cookie
+
+| Option        | Role                                | Default value | Possible values             |
+|---------------|-------------------------------------|:-------------:|-----------------------------|
+| name          | Cookie Name                         |      none     | String                      |
+| mode          | Cookie Mode                         |      none     | rewrite \| insert \| prefix |
+| options       | Option for cookie-based persistence |      none     | [Cookie](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-cookie) |
+
+
+### Backend Server Syntax
 
 Here is a recap of all possibles values for backend_server in backend_server_list in haproxy_backends configuration
 
-| Option        | Role                                         | Default value | Possible values    |
-|---------------|----------------------------------------------|:-------------:|--------------------|
-| name          | Frontend Name                                |      none     | String             |
-| address       | IP Address of backend server                 |      none     | Single IP          |
-| comment       | A comment escaped for HAProxy                |      none     | String             |
-| custom        | Any custom option not yet available with var |      none     | Any HAP option     |
-| maxconn       | Maximum number of concurrent connections     |      none     | Number             |
-| port          | Port number of backend server                |      none     | Port Number        |
-| weight  | Load is proportional to their weight relative to the sum of all weights | 1 | 0-256 [Weight](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.2-weight) |
+| Option        | Role                                         | Default value       | Possible values  |
+|---------------|----------------------------------------------|:-------------------:|------------------|
+| name          | Backend server Name                          |        none         | String           |
+| address       | IP Address of backend server                 |        none         | Single IP        |
+| comment       | A comment escaped for HAProxy                |        none         | String           |
+| cookie        | Customize value for backend cookie (When backend cookie is enabled) | backend server name | String |
+| custom        | Any custom option not yet available with var |        none         | Any HAP option   |
+| maxconn       | Maximum number of concurrent connections     |        none         | Number           |
+| port          | Port number of backend server                |        none         | Port Number      |
+| weight | Load is proportional to their weight relative to the sum of all weights | 1 | 0-256 [Weight](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.2-weight) |
 
 
 ## Example Playbook

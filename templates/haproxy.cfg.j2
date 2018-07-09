@@ -89,6 +89,9 @@ backend {{ backend.name }}
 
     balance {% if backend.balance is not defined %} roundrobin {% else %} {{ backend.balance }} {% endif %}
 
+    {% if backend.cookie is defined -%}
+    cookie {{ backend.cookie.name }} {{ backend.cookie.mode }} {{ backend.cookie.options }}
+    {% endif -%}
     {% for option in backend.options -%}
         option {{ option }}
     {% endfor -%}
@@ -96,6 +99,7 @@ backend {{ backend.name }}
         server {{ backend_server.name }} {{ backend_server.address }}:{{ backend_server.port }}
             {%- if backend_server.weight is defined %} weight {{ backend_server.weight }} {%- endif %}
             {%- if backend_server.maxconn is defined %} maxconn {{ backend_server.maxconn }} {%- endif %}
+            {%- if backend.cookie is defined %} cookie {%- if backend_server.cookie is defined %} {{ backend_server.cookie }} {% else %} {{ backend_server.name }} {% endif %} {%- endif %}
             {%- if backend_server.custom is defined %} {{ backend_server.custom }} {%- endif %}
 
     {% endfor -%}
