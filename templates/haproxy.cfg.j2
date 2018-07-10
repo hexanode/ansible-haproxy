@@ -72,9 +72,12 @@ frontend {{ frontend.name }}
     bind {{ frontend.bind }}:{{ frontend.port }}
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
 
+    {% if frontend.options is defined -%}
     {% for option in frontend.options -%}
         option {{ option }}
     {% endfor -%}
+    {% endif -%}
+
     default_backend {{ frontend.default_backend }}
 
 {% endfor %}
@@ -92,9 +95,13 @@ backend {{ backend.name }}
     {% if backend.cookie is defined -%}
     cookie {{ backend.cookie.name }} {{ backend.cookie.mode }} {{ backend.cookie.options }}
     {% endif -%}
+
+    {% if backend.options is defined -%}
     {% for option in backend.options -%}
         option {{ option }}
     {% endfor -%}
+    {% endif -%}
+
     {% for backend_server in backend.backend_server_list -%}
         server {{ backend_server.name }} {{ backend_server.address }}:{{ backend_server.port }}
             {%- if backend_server.weight is defined %} weight {{ backend_server.weight }} {%- endif %}
