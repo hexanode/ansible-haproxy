@@ -27,21 +27,21 @@ Modifiables variables and possible values are listed below :
 haproxy_chroot: '/var/lib/haproxy'
 
 # User & Group for HAProxy
-haproxy_user: haproxy
+haproxy_user:  haproxy
 haproxy_group: haproxy
 
 # Web Stats
-
-# Set to true in order to enable webstats. (default is false)
-haproxy_webstats: false
-haproxy_webstats_ip: '0.0.0.0'
-haproxy_webstats_port: '8080'
-haproxy_webstats_maxconn: '10'
-haproxy_webstats_refreshtime: '30s'
-haproxy_webstats_realm: 'HAProxy\ Statistics'
-haproxy_webstats_username: 'admin'
-haproxy_webstats_password: 'password'
-haproxy_webstats_uri: '/haproxy?stats'
+haproxy_webstats: false                         # Set to true in order to enable webstats. (default is false)
+haproxy_webstats_ip: '0.0.0.0'                  # Listening IP for the webstats interface
+haproxy_webstats_port: '8080'                   # Listening Port for the webstats interface
+haproxy_webstats_maxconn: '10'                  # Maximum per-process number of concurrent connections
+haproxy_webstats_refreshtime: '30s'             # Enable automatic refresh with a delay
+haproxy_webstats_realm: 'HAProxy\ Statistics'   # Authentication Realm
+haproxy_webstats_username: 'admin'              # Authentication Username
+haproxy_webstats_password: 'password'           # Authentication Password
+haproxy_webstats_uri: '/haproxy?stats'          # Authentication URL
+haproxy_webstats_admin_opt: 'if FALSE'          # Manage admin level if/unless a condition is matched (ex: if TRUE / if LOCALHOST)
+# haproxy_webstats_scope: '.'                   # Scope for this webstat interface
 
 # Frontends
 haproxy_frontends_list: []
@@ -102,11 +102,11 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 |---------------------|-----------------------------------------|:--------------:|------------------------------------|
 | name                | Frontend Name                           |      none      | String                             |
 | check_all_servers   | Manage check by default for all servers |      none      | Boolean (true\|false)              |
-| cookie              | Cookie definition for backend           |      none      | See Backend Cookie Syntax guide    |
+| cookie              | Cookie definition for backend           |      none      | [See Backend Cookie Syntax guide](#backend-cookie-syntax) |
 | mode                | Protocol used for the instance          |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | balance             | Algorithm used to load balance          |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
-| options             | List of options                         |      none      | All options available for backtend |
-| backend_server_list | List of backend servers                 |      none      | See Backend Server Syntax guide    |
+| options             | List of options                         |      none      | All options available for backend |
+| backend_server_list | List of backend servers                 |      none      | [See Backend Server Syntax guide](#backend-server-syntax) |
 
 **Note :**
 - If an option is omitted the default (if any) will be used.
@@ -176,12 +176,41 @@ Here is a recap of all possibles values for backend_server in backend_server_lis
 
 How to use the role in your ansible playbook.
 
+**Playbook**
+
 ```
 - name: Playbook Task to install haproxy role
   hosts: all (Group of servers on which you want to install and configure haproxy)
   roles:
     - { role: haproxy, tags: [ 'haproxy' ] }
 ```
+
+**Variables**
+
+```
+role_haproxy: true						# Enable haproxy role
+
+haproxy_webstats: true					# Enable webstats
+haproxy_webstats_admin_opt: 'if TRUE'	# Enable admin level for webstats interface
+
+haproxy_frontends_list:
+  - { name: 'default', mode: 'http', bind: '*', port: '80', options: [], default_backend: 'www' }
+
+haproxy_backends_list:
+  - name: 'www'
+    comment: 'HTTP Web backend for my app'
+    mode: 'http'
+    balance: 'roundrobin'
+    options:
+      - tcp-check
+      - forwardfor
+    check_all_servers: true
+    cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
+    backend_server_list:
+      - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
+      - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
+```
+
 
 ## ToDo
 
