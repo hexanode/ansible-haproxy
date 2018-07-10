@@ -1,6 +1,6 @@
 # Ansible Role: HAProxy
 
-An Ansible Role that installs iptables and configure HAProxy.
+An Ansible Role that install and configure HAProxy.
 
 We want this role as simple, configurable and interoperable as possible.
 
@@ -191,7 +191,7 @@ How to use the role in your ansible playbook.
 role_haproxy: true						# Enable haproxy role
 
 haproxy_webstats: true					# Enable webstats
-haproxy_webstats_admin_opt: 'if TRUE'	# Enable admin level for webstats interface
+haproxy_webstats_admin_opt: 'if TRUE'   # Enable admin level for webstats interface
 
 haproxy_frontends_list:
   - { name: 'default', mode: 'http', bind: '*', port: '80', options: [], default_backend: 'www' }
