@@ -59,14 +59,14 @@ none
 
 Here is a recap of all possible values for haproxy_frontends in haproxy_frontends_list.
 
-| Option          | Role                            | Required | Default value | Possible values                     |
+| Option          | Role                            | Required | Default value | Type                                |
 |-----------------|---------------------------------|:--------:|:-------------:|-------------------------------------|
 | name            | Frontend Name                   |   true   |      none     | String                              |
 | comment         | A comment escaped for HAProxy   |   false  |      none     | String                              |
-| bind            | Bind frontend with interface    |   true   |      none     | * (any), any IP Adress              |
-| port            | Bind frontend with a port on if |   true   |      none     | any port number 1-65535             |
+| bind            | Bind frontend with interface    |   true   |      none     | IP Address or * for any             |
+| port            | Bind frontend with a port on if |   true   |      none     | Port number (1-65535)               |
 | mode            | Protocol used for the instance  |   false  |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
-| options         | List of options                 |   false  |      none     | All options available for frontend  |
+| options         | List of options                 |   false  |      none     | List (All options available for frontend) |
 | default_backend | Default backend used            |   true   |      none     | String                              |
 
 **Note :**
@@ -98,15 +98,15 @@ frontend example
 
 Here is a recap of all possible values for haproxy_backends in haproxy_backends_list.
 
-| Option              | Role                                    | Required | Default value  | Possible values                    |
+| Option              | Role                                    | Required | Default value  | Type                               |
 |---------------------|-----------------------------------------|:--------:|:--------------:|------------------------------------|
 | name                | Frontend Name                           |   true   |      none      | String                             |
 | check_all_servers   | Manage check by default for all servers |   false  |      none      | Boolean (true\|false)              |
-| cookie              | Cookie definition for backend           |   false  |      none      | [See Backend Cookie Syntax guide](#backend-cookie-syntax) |
+| cookie              | Cookie definition for backend           |   false  |      none      | Dict [See Backend Cookie Syntax guide](#backend-cookie-syntax) |
 | mode                | Protocol used for the instance          |   false  |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | balance             | Algorithm used to load balance          |   false  |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
-| options             | List of options                         |   false  |      none      | All options available for backend |
-| backend_server_list | List of backend servers                 |   true   |      none      | [See Backend Server Syntax guide](#backend-server-syntax) |
+| options             | List of options                         |   false  |      none      | List (All options available for backend) |
+| backend_server_list | List of backend servers                 |   true   |      none      | List [See Backend Server Syntax guide](#backend-server-syntax) |
 
 **Note :**
 - If an option is omitted the default (if any) will be used.
@@ -146,9 +146,9 @@ backend www
 
 ### Backend Cookie Syntax
 
-Here is a recap of all possibles values for cookie
+Here is a recap of all possibles values for cookie. The cookie variable for a backend is a list of dictionary
 
-| Option        | Role                                | Required | Default value | Possible values             |
+| Option        | Role                                | Required | Default value | Type                        |
 |---------------|-------------------------------------|:--------:|:-------------:|-----------------------------|
 | name          | Cookie Name                         |   true   |      none     | String                      |
 | mode          | Cookie Mode                         |   true   |      none     | rewrite \| insert \| prefix |
@@ -159,16 +159,16 @@ Here is a recap of all possibles values for cookie
 
 Here is a recap of all possibles values for backend_server in backend_server_list in haproxy_backends configuration
 
-| Option        | Role                                         | Required | Default value       | Possible values  |
+| Option        | Role                                         | Required | Default value       | Type             |
 |---------------|----------------------------------------------|:--------:|:-------------------:|------------------|
 | name          | Backend server Name                          |   true   |        none         | String           |
-| address       | IP Address of backend server                 |   true   |        none         | Single IP        |
+| address       | IP Address of backend server                 |   true   |        none         | Single IP Address |
 | check         | Manage check for this server (This override the check_all_servers in backend) | false | none | Boolean (true\|false) |
 | comment       | A comment escaped for HAProxy                |   false   |        none         | String           |
 | cookie        | Customize value for backend cookie (When backend cookie is enabled) | false | backend server name | String |
-| custom        | Any custom option not yet available with var |   false   |        none         | Any HAP option   |
+| custom        | Any custom option not yet available with var |   false   |        none         | String Any HAP option |
 | maxconn       | Maximum number of concurrent connections     |   false   |        none         | Number           |
-| port          | Port number of backend server                |   true   |        none         | Port Number      |
+| port          | Port number of backend server                |   true   |        none         | Port number (1-65535) |
 | weight | Load is proportional to their weight relative to the sum of all weights | false | 1 | 0-256 [Weight](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.2-weight) |
 
 
