@@ -120,13 +120,14 @@ comment: 'HTTP Web backend for my app'
 mode: 'http'
 balance: 'roundrobin'
 options:
-  - tcp-check
+  - httpchk GET /
   - forwardfor
 check_all_servers: true
 cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
 backend_server_list:
   - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
   - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
+  - { name: 'bkp1', address: '216.58.208.227', port: '80', cookie: 'web1', custom: 'backup' }
 ```
 
 This will be respectively translated to :
@@ -137,7 +138,7 @@ backend www
     mode http
     balance  roundrobin
     cookie ServID insert indirect
-    option tcp-check
+    option httpchck GET /
     option forwardfor
     server web1 216.58.213.131:80 weight 10 cookie web1 check
     server web2 216.58.204.110:80 maxconn 256 cookie web2 check
@@ -200,13 +201,14 @@ haproxy_backends_list:
     mode: 'http'
     balance: 'roundrobin'
     options:
-      - tcp-check
+      - httpchk GET /
       - forwardfor
     check_all_servers: true
     cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
     backend_server_list:
       - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
       - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
+      - { name: 'bkp1', address: '216.58.208.227', port: '80', cookie: 'web1', custom: 'backup' }
 ```
 
 
