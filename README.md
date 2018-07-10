@@ -188,8 +188,6 @@ How to use the role in your ansible playbook.
 **Variables**
 
 ```
-role_haproxy: true						# Enable haproxy role
-
 haproxy_webstats: true					# Enable webstats
 haproxy_webstats_admin_opt: 'if TRUE'   # Enable admin level for webstats interface
 

@@ -79,7 +79,7 @@ frontend {{ frontend.name }}
 
 {% endfor %}
 
-{% for backend in haproxy_backends_list %}
+{% for backend in haproxy_backends_list -%}
 backend {{ backend.name }}
     {% if backend.comment is defined -%}
     # {{ backend.comment }}
@@ -87,7 +87,7 @@ backend {{ backend.name }}
 
     mode {%- if backend.mode is not defined %} tcp {%- else %} {{ backend.mode }} {% endif %}
 
-    balance {% if backend.balance is not defined %} roundrobin {% else %} {{ backend.balance }} {% endif %}
+    balance {%- if backend.balance is not defined %} roundrobin {%- else %} {{ backend.balance }} {% endif %}
 
     {% if backend.cookie is defined -%}
     cookie {{ backend.cookie.name }} {{ backend.cookie.mode }} {{ backend.cookie.options }}
@@ -103,5 +103,6 @@ backend {{ backend.name }}
             {%- if ( backend_server.check is defined and backend_server.check|bool ) or ( backend.check_all_servers is defined and backend_server.check is undefined and backend.check_all_servers|bool ) %} check {%- endif %}
             {%- if backend_server.custom is defined %} {{ backend_server.custom }} {%- endif %}
 
-    {% endfor -%}
+    {% endfor %}
+
 {% endfor %}
