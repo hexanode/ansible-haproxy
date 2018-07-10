@@ -76,8 +76,9 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
-- { name: 'default', bind: '*', port: '80', options: [], default_backend: 'www' },
-- { name: 'example', bind: '93.184.216.34', port: '8080', options: [], default_backend: 'example_backend' }
+haproxy_frontends_list:
+  - { name: 'default', bind: '*', port: '80', default_backend: 'www' },
+  - { name: 'example', mode: tcp, bind: '93.184.216.34', port: '514', default_backend: 'app' }
 ```
 
 This will be respectively translated to :
@@ -89,9 +90,9 @@ frontend default
     default_backend www
 
 frontend example
-    bind 93.184.216.34:8080
-    mode http
-    default_backend example_backend
+    bind 93.184.216.34:514
+    mode tcp
+    default_backend app
 ```
 
 
@@ -117,33 +118,54 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 The syntax is a bit flexible, per example you can use the following syntax.
 
 ```
-name: 'www'
-comment: 'HTTP Web backend for my app'
-mode: 'http'
-balance: 'roundrobin'
-options:
-  - httpchk GET /
-  - forwardfor
-check_all_servers: true
-cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
-backend_server_list:
-  - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
-  - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
-  - { name: 'bkp1', address: '216.58.208.227', port: '80', cookie: 'web1', custom: 'backup' }
+haproxy_backends_list:
+  - name: 'www'
+    comment: 'HTTP backend for my web app'
+    mode: 'http'
+    balance: 'roundrobin'
+    options:
+      - httpchk GET /
+      - forwardfor
+    check_all_servers: true
+    cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
+    backend_server_list:
+      - { name: 'web1', address: '216.58.213.131', port: '80', maxconn: 256 }
+      - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
+      - { name: 'bkp1', address: '216.58.208.227', port: '80', cookie: 'web1', custom: 'backup' }
+  - name: 'app'
+    balance: 'roundrobin'
+    options:
+      - tcp-check
+    custom:
+      - stick-table type ip size 250k expire 30m
+      - stick on src
+    backend_server_list:
+      - { name: 'app1', address: '10.0.10.1', port: '514', weight: 10 }
+      - { name: 'app2', address: '10.0.10.2', port: '514', weight: 20 }
 ```
 
 This will be respectively translated to :
 
 ```
 backend www
-    # HTTP Web backend for my app
+    # HTTP backend for my web app
     mode http
-    balance  roundrobin
+    balance roundrobin
     cookie ServID insert indirect
-    option httpchck GET /
+    option httpchk GET /
     option forwardfor
-    server web1 216.58.213.131:80 weight 10 cookie web1 check
+    server web1 216.58.213.131:80 maxconn 256 cookie web1 check
     server web2 216.58.204.110:80 maxconn 256 cookie web2 check
+    server bkp1 216.58.208.227:80 cookie web1 check backup
+
+backend app
+    mode tcp
+    balance roundrobin
+    option tcp-check
+    stick-table type ip size 250k expire 30m
+    stick on src
+    server app1 10.0.10.1:514 weight 10
+    server app2 10.0.10.2:514 weight 20
 ```
 
 
@@ -199,7 +221,7 @@ haproxy_frontends_list:
 
 haproxy_backends_list:
   - name: 'www'
-    comment: 'HTTP Web backend for my app'
+    comment: 'HTTP backend for my web app'
     mode: 'http'
     balance: 'roundrobin'
     options:
@@ -208,14 +230,27 @@ haproxy_backends_list:
     check_all_servers: true
     cookie: { name: 'ServID', mode: 'insert', options: 'indirect' }
     backend_server_list:
-      - { name: 'web1', address: '216.58.213.131', port: '80', weight: 10 }
+      - { name: 'web1', address: '216.58.213.131', port: '80', maxconn: 256 }
       - { name: 'web2', address: '216.58.204.110', port: '80', maxconn: 256 }
       - { name: 'bkp1', address: '216.58.208.227', port: '80', cookie: 'web1', custom: 'backup' }
+  - name: 'app'
+    balance: 'roundrobin'
+    options:
+      - tcp-check
+    custom:
+      - stick-table type ip size 250k expire 30m
+      - stick on src
+    backend_server_list:
+      - { name: 'app1', address: '10.0.10.1', port: '514', weight: 10 }
+      - { name: 'app2', address: '10.0.10.2', port: '514', weight: 20 }
 ```
 
 
 ## ToDo
 
+- Manage SSL
+- Manage use_backend
+- Manage ACL
 
 ## License
 
