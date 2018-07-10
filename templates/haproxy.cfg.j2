@@ -78,6 +78,12 @@ frontend {{ frontend.name }}
     {% endfor -%}
     {% endif -%}
 
+    {% if frontend.custom is defined -%}
+    {% for custom in frontend.custom -%}
+        {{ custom }}
+    {% endfor -%}
+    {% endif -%}
+
     default_backend {{ frontend.default_backend }}
 
 {% endfor %}
@@ -99,6 +105,12 @@ backend {{ backend.name }}
     {% if backend.options is defined -%}
     {% for option in backend.options -%}
         option {{ option }}
+    {% endfor -%}
+    {% endif -%}
+
+    {% if backend.custom is defined -%}
+    {% for custom in backend.custom -%}
+        {{ custom }}
     {% endfor -%}
     {% endif -%}
 

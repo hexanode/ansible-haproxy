@@ -63,6 +63,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 |-----------------|---------------------------------|:--------:|:-------------:|-------------------------------------|
 | name            | Frontend Name                   |   true   |      none     | String                              |
 | comment         | A comment escaped for HAProxy   |   false  |      none     | String                              |
+| custom          | A list of custom config lines   |   false  |      none     | List (Any frontend configuration not managed by this role) |
 | bind            | Bind frontend with interface    |   true   |      none     | IP Address or * for any             |
 | port            | Bind frontend with a port on if |   true   |      none     | Port number (1-65535)               |
 | mode            | Protocol used for the instance  |   false  |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
@@ -103,6 +104,7 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 | name                | Frontend Name                           |   true   |      none      | String                             |
 | check_all_servers   | Manage check by default for all servers |   false  |      none      | Boolean (true\|false)              |
 | cookie              | Cookie definition for backend           |   false  |      none      | Dict [See Backend Cookie Syntax guide](#backend-cookie-syntax) |
+| custom              | A list of custom config lines           |   false  |      none      | List (Any backend configuration not managed by this role) |
 | mode                | Protocol used for the instance          |   false  |      tcp       | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | balance             | Algorithm used to load balance          |   false  |   roundrobin   | [Balance](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-balance) |
 | options             | List of options                         |   false  |      none      | List (All options available for backend) |
