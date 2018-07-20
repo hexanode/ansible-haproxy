@@ -30,6 +30,9 @@ haproxy_chroot: '/var/lib/haproxy'
 haproxy_user:  haproxy
 haproxy_group: haproxy
 
+# Custom errors pages
+haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
+
 # Web Stats
 haproxy_webstats: false                         # Set to true in order to enable webstats. (default is false)
 haproxy_webstats_ip: '0.0.0.0'                  # Listening IP for the webstats interface
@@ -106,6 +109,7 @@ Here is a recap of all possible values for the bind dictionary :
 |---------|--------------|:--------:|:-------------:|-------------------------------|
 | address | Bind address |   false  |       *       | Single IP Address (* for any) |
 | port    | Bind port    |   true   |      none     | Port number (1-65535)         |
+| crt     | Enable SSL terminaison for this bind when crt defined | false | none | Absolute path to pem combined (certificate + key) file |
 
 Example :
 
@@ -116,7 +120,7 @@ bind: { address: '*', port: '80' }
 # List of dictionary :
 bind:
   - { address: '*', port: '80' }
-  - { port: '8080' }
+  - { port: '443', crt: '/etc/haproxy/ssl/combined.pem' }
 ```
 
 
@@ -243,7 +247,9 @@ haproxy_webstats_admin_opt: 'if TRUE'   # Enable admin level for webstats interf
 haproxy_frontends_list:
   - name: 'default'
     mode: 'http'
-    bind: { port: '80' }
+    bind:
+      - { address: '*', port: '80' }
+      - { port: '443', crt: '/etc/haproxy/ssl/combined.pem' }
     port: '80'
     options: []
     default_backend: 'www'

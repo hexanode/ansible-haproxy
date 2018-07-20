@@ -74,9 +74,13 @@ frontend {{ frontend.name }}
 
     {% if frontend.bind is mapping -%}
         bind {%- if frontend.bind.address is not defined %} * {%- else %} {{ frontend.bind.address }} {%- endif %}:{{ frontend.bind.port }}
+        {%- if frontend.bind.crt is defined %} ssl crt {{ frontend.bind.crt }} {% endif %}
+
     {% elif frontend.bind is iterable and frontend.bind is not string -%}
     {% for bind_item in frontend.bind -%}
         bind {%- if bind_item.address is not defined %} * {%- else %} {{ bind_item.address }} {%- endif %}:{{ bind_item.port }}
+        {%- if bind_item.crt is defined %} ssl crt {{ bind_item.crt }} {% endif %}
+
     {% endfor -%}
     {% endif -%}
 
