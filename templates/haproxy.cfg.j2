@@ -1,3 +1,5 @@
+# This file is managed by Ansible.
+
 global
     log /dev/log    local0
     log /dev/log    local1 notice
@@ -69,7 +71,15 @@ frontend {{ frontend.name }}
     {% if frontend.comment is defined -%}
     # {{ frontend.comment }}
     {% endif -%}
-    bind {{ frontend.bind }}:{{ frontend.port }}
+
+    {% if frontend.bind is mapping -%}
+        bind {%- if frontend.bind.address is not defined %} * {%- else %} {{ frontend.bind.address }} {%- endif %}:{{ frontend.bind.port }}
+    {% elif frontend.bind is iterable and frontend.bind is not string -%}
+    {% for bind_item in frontend.bind -%}
+        bind {%- if bind_item.address is not defined %} * {%- else %} {{ bind_item.address }} {%- endif %}:{{ bind_item.port }}
+    {% endfor -%}
+    {% endif -%}
+
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
 
     {% if frontend.options is defined -%}

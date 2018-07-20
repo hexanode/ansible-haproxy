@@ -64,7 +64,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | name            | Frontend Name                   |   true   |      none     | String                              |
 | comment         | A comment escaped for HAProxy   |   false  |      none     | String                              |
 | custom          | A list of custom config lines   |   false  |      none     | List (Any frontend configuration not managed by this role) |
-| bind            | Bind frontend with interface    |   true   |      none     | IP Address or * for any             |
+| bind            | Bind frontend with interface(s) |   true   |      none     | Dict or List [See Frontend Bind Syntax guide](#frontend-bind-syntax) |
 | port            | Bind frontend with a port on if |   true   |      none     | Port number (1-65535)               |
 | mode            | Protocol used for the instance  |   false  |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | options         | List of options                 |   false  |      none     | List (All options available for frontend) |
@@ -73,7 +73,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 **Note :**
 - If you omit a value the default (if any) will be used.
 
-The syntax is a bit flexible, per example you can use the following syntax.
+The syntax is flexible, per example you can use the following syntax :
 
 ```
 haproxy_frontends_list:
@@ -96,6 +96,30 @@ frontend example
 ```
 
 
+### Frontend Bind syntax
+
+You can define bind parameters for haproxy frontends in two way a single dictionary or a list of dictionary for multiples binds.
+
+Here is a recap of all possible values for the bind dictionary :
+
+| Option  | Role         | Required | Default value | Type                          |
+|---------|--------------|:--------:|:-------------:|-------------------------------|
+| address | Bind address |   false  |       *       | Single IP Address (* for any) |
+| port    | Bind port    |   true   |      none     | Port number (1-65535)         |
+
+Example :
+
+```
+# Single dictionary :
+bind: { address: '*', port: '80' }
+
+# List of dictionary :
+bind:
+  - { address: '*', port: '80' }
+  - { port: '8080' }
+```
+
+
 ## Backends Syntax
 
 Here is a recap of all possible values for haproxy_backends in haproxy_backends_list.
@@ -115,7 +139,7 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 - If an option is omitted the default (if any) will be used.
 - If the cookie option is defined this will automaticaly enable the cookie param for each backend server (See Backend Server Syntax guide)
 
-The syntax is a bit flexible, per example you can use the following syntax.
+The syntax is flexible, per example you can use the following syntax :
 
 ```
 haproxy_backends_list:
@@ -201,7 +225,7 @@ Here is a recap of all possibles values for backend_server in backend_server_lis
 
 How to use the role in your ansible playbook.
 
-**Playbook**
+**Playbook example**
 
 ```
 - name: Playbook Task to install haproxy role
@@ -210,14 +234,19 @@ How to use the role in your ansible playbook.
     - { role: haproxy, tags: [ 'haproxy' ] }
 ```
 
-**Variables**
+**Variables example**
 
 ```
-haproxy_webstats: true					# Enable webstats
+haproxy_webstats: true                  # Enable webstats
 haproxy_webstats_admin_opt: 'if TRUE'   # Enable admin level for webstats interface
 
 haproxy_frontends_list:
-  - { name: 'default', mode: 'http', bind: '*', port: '80', options: [], default_backend: 'www' }
+  - name: 'default'
+    mode: 'http'
+    bind: { port: '80' }
+    port: '80'
+    options: []
+    default_backend: 'www'
 
 haproxy_backends_list:
   - name: 'www'
