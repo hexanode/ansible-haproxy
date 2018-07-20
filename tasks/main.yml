@@ -24,3 +24,13 @@
     validate: 'haproxy -c -f %s -q'
   notify: Restart HAProxy
   tags: haproxy_config
+
+# Copy custom errors page
+- name: Copy custom errors page
+  copy:
+    src: errors/
+    dest: /etc/haproxy/errors/
+    mode: 0644
+  notify: Reload HAProxy
+  when: haproxy_custom_errors_pages
+  tags: haproxy_errors_pages

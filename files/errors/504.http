@@ -1,0 +1,30 @@
+HTTP/1.0 504 Gateway Time-out
+Cache-Control: no-cache
+Connection: close
+Content-Type: text/html
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>504 Gateway Time-out</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            body { text-align: center; padding: 150px; }
+            h1 { font-size: 35px; }
+            body { font: 20px Helvetica, sans-serif; color: #333; }
+            article { display: block; text-align: left; width: 650px; margin: 0 auto; }
+            a { color: #dc8100; text-decoration: none; }
+            a:hover { color: #333; text-decoration: none; }
+        </style>
+    </head>
+    <body>
+        <article>
+            <h1>504 Gateway Time-out</h1>
+            <div>
+                <p>The server didn't respond in time.</p>
+                <p>&mdash; We&rsquo;ll be back soon ! Sorry for the inconvenience.</p>
+            </div>
+        </article>
+    </body>
+</html>

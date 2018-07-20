@@ -4,3 +4,8 @@
   service:
     name: haproxy
     state: restarted
+
+- name: Reload HAProxy
+  service:
+    name: haproxy
+    state: reloaded

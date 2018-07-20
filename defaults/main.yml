@@ -11,6 +11,9 @@ haproxy_chroot: '/var/lib/haproxy'
 haproxy_user:  haproxy
 haproxy_group: haproxy
 
+# Custom errors pages
+haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
+
 # Web Stats
 haproxy_webstats: false                         # Set to true in order to enable webstats. (default is false)
 haproxy_webstats_ip: '0.0.0.0'                  # Listening IP for the webstats interface
