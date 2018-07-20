@@ -66,11 +66,13 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | Option          | Role                            | Required | Default value | Type                                |
 |-----------------|---------------------------------|:--------:|:-------------:|-------------------------------------|
 | name            | Frontend Name                   |   true   |      none     | String                              |
+| bind            | Bind frontend with interface(s) |   true   |      none     | Dict or List [See Frontend Bind Syntax guide](#frontend-bind-syntax) |
 | comment         | A comment escaped for HAProxy   |   false  |      none     | String                              |
 | custom          | A list of custom config lines   |   false  |      none     | List (Any frontend configuration not managed by this role) |
-| bind            | Bind frontend with interface(s) |   true   |      none     | Dict or List [See Frontend Bind Syntax guide](#frontend-bind-syntax) |
-| port            | Bind frontend with a port on if |   true   |      none     | Port number (1-65535)               |
-| mode            | Protocol used for the instance  |   false  |      tcp      | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| acl | A list of acl conf lines | false | none | [ACL](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-acl) |
+| redirect | A list of redirect conf lines | false | none | [ACL](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-acl) |
+| use_backend | A list of use_backend conf lines | false | none | [ACL](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-acl) |
+| mode | Protocol used for the instance | false | tcp | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | options         | List of options                 |   false  |      none     | List (All options available for frontend) |
 | default_backend | Default backend used            |   true   |      none     | String                              |
 
@@ -81,8 +83,13 @@ The syntax is flexible, per example you can use the following syntax :
 
 ```
 haproxy_frontends_list:
-  - { name: 'default', bind: '*', port: '80', default_backend: 'www' },
-  - { name: 'example', mode: tcp, bind: '93.184.216.34', port: '514', default_backend: 'app' }
+  - name: 'default'
+    bind: { address: '*', port: '80' }
+    default_backend: 'www'
+  - name: 'example'
+    mode: tcp
+    bind: { address: '93.184.216.34', port: '514' }
+    default_backend: 'app'
 ```
 
 This will be respectively translated to :
@@ -251,8 +258,6 @@ haproxy_frontends_list:
     bind:
       - { address: '*', port: '80' }
       - { port: '443', crt: '/etc/haproxy/ssl/combined.pem' }
-    port: '80'
-    options: []
     default_backend: 'www'
 
 haproxy_backends_list:

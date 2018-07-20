@@ -99,6 +99,24 @@ frontend {{ frontend.name }}
     {% endfor -%}
     {% endif -%}
 
+    {% if frontend.redirect is defined -%}
+    {% for redirect in frontend.redirect -%}
+        redirect {{ redirect }}
+    {% endfor -%}
+    {% endif -%}
+
+    {% if frontend.acl is defined -%}
+    {% for acl in frontend.acl -%}
+        acl {{ acl }}
+    {% endfor -%}
+    {% endif -%}
+
+    {% if frontend.use_backend is defined -%}
+    {% for use_backend in frontend.use_backend -%}
+        use_backend {{ use_backend }}
+    {% endfor -%}
+    {% endif -%}
+
     default_backend {{ frontend.default_backend }}
 
 {% endfor %}
