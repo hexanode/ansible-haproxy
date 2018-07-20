@@ -117,7 +117,8 @@ Here is a recap of all possible values for the bind dictionary :
 |---------|--------------|:--------:|:-------------:|-------------------------------|
 | address | Bind address |   false  |       *       | Single IP Address (* for any) |
 | port    | Bind port    |   true   |      none     | Port number (1-65535)         |
-| crt     | Enable SSL terminaison for this bind when crt defined | false | none | Absolute path to pem combined (certificate + key) file |
+| crt     | Enable SSL for this bind by defining crt | false | none | Absolute path to pem combined (certificate + key) file [crt](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt) |
+| crt_list | Enable SSL for this bind by defining crt_list | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) |
 
 Example :
 

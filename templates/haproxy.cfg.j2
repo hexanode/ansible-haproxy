@@ -81,6 +81,7 @@ frontend {{ frontend.name }}
     {% for bind_item in frontend.bind -%}
         bind {%- if bind_item.address is not defined %} * {%- else %} {{ bind_item.address }} {%- endif %}:{{ bind_item.port }}
         {%- if bind_item.crt is defined %} ssl crt {{ bind_item.crt }} {% endif %}
+        {%- if bind_item.crt_list is defined %} ssl crt_list {{ bind_item.crt_list }} {% endif %}
 
     {% endfor -%}
     {% endif -%}
