@@ -22,7 +22,7 @@
     dest: /etc/haproxy/haproxy.cfg
     mode: 0644
     validate: 'haproxy -c -f %s -q'
-  notify: Restart HAProxy
+  notify: Reload HAProxy
   tags: haproxy_config
 
 # Copy custom errors page
