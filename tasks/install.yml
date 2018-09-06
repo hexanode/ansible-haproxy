@@ -1,5 +1,8 @@
 ---
 
+# Copyright (c) 2018 Kabolt
+# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 # Install HAProxy package from debian stable repository
 - name: Install required HAProxy package
   apt:
@@ -7,7 +10,7 @@
     state: present
     update_cache: yes
     install_recommends: no
-    cache_valid_time: 604800
+    cache_valid_time: 86400
 
 - name: Ensure HAProxy is started and enabled at boot.
   service:
