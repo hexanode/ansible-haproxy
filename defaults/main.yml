@@ -11,6 +11,11 @@ haproxy_chroot: '/var/lib/haproxy'
 haproxy_user:  haproxy
 haproxy_group: haproxy
 
+# Defaults
+haproxy_timeout_connect: 6000
+haproxy_timeout_client:  60000
+haproxy_timeout_server:  60000
+
 # Custom errors pages
 haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
 
