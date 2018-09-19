@@ -1,0 +1,24 @@
+---
+
+# Copyright (c) 2018 Kabolt
+# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+# Deploy HAProxy configuration
+- name: Deploy HAProxy configuration
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    mode: 0644
+    validate: 'haproxy -c -f %s -q'
+  notify: Reload HAProxy
+  tags: haproxy_configfile
+
+# Copy custom errors page
+- name: Copy custom errors page
+  copy:
+    src: errors/
+    dest: /etc/haproxy/errors/
+    mode: 0644
+  notify: Reload HAProxy
+  when: haproxy_custom_errors_pages
+  tags: haproxy_errors_pages

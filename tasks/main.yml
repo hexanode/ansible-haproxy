@@ -15,22 +15,7 @@
   import_tasks: install.yml
   tags: haproxy_install
 
-# Deploy HAProxy configuration
-- name: Deploy HAProxy configuration
-  template:
-    src: haproxy.cfg.j2
-    dest: /etc/haproxy/haproxy.cfg
-    mode: 0644
-    validate: 'haproxy -c -f %s -q'
-  notify: Reload HAProxy
+# Config
+- name: Static import of config
+  import_tasks: config.yml
   tags: haproxy_config
-
-# Copy custom errors page
-- name: Copy custom errors page
-  copy:
-    src: errors/
-    dest: /etc/haproxy/errors/
-    mode: 0644
-  notify: Reload HAProxy
-  when: haproxy_custom_errors_pages
-  tags: haproxy_errors_pages
