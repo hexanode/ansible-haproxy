@@ -16,6 +16,11 @@ haproxy_timeout_connect: 6000
 haproxy_timeout_client:  60000
 haproxy_timeout_server:  60000
 
+# Logging
+haproxy_logrotate_period: daily
+haproxy_logrotate_amount: 21
+haproxy_logrotate_maxsize: '500M'
+
 # Custom errors pages
 haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
 

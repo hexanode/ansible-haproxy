@@ -22,3 +22,12 @@
   notify: Reload HAProxy
   when: haproxy_custom_errors_pages
   tags: haproxy_errors_pages
+
+# Generate HAProxy logrotate config
+- name: Generate HAProxy logrotate config
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/haproxy
+    owner: root
+    group: root
+    mode: 0644

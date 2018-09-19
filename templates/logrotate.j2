@@ -1,0 +1,12 @@
+/var/log/haproxy.log {
+    {{ haproxy_logrotate_period }}
+    rotate {{ haproxy_logrotate_amount }}
+    maxsize {{ haproxy_logrotate_maxsize }}
+    missingok
+    notifempty
+    compress
+    delaycompress
+    postrotate
+        invoke-rc.d rsyslog rotate >/dev/null 2>&1 || true
+    endscript
+}
