@@ -15,6 +15,12 @@
   import_tasks: install.yml
   tags: haproxy_install
 
+# SSL
+- name: Static import of ssl
+  import_tasks: ssl.yml
+  when: haproxy_generate_self_signed_cert
+  tags: haproxy_ssl
+
 # Config
 - name: Static import of config
   import_tasks: config.yml

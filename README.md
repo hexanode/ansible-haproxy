@@ -4,6 +4,12 @@ An Ansible Role that install and configure HAProxy.
 
 We want this role as simple, configurable and interoperable as possible.
 
+## Role behavior
+
+This ansible role install and configure HAProxy.
+
+This software can manage, global configurations, statistic panel, frontends, backends with all common and custom configuration.
+
 ## Requirements
 
 Compliant with :
@@ -12,9 +18,7 @@ Compliant with :
 Other:
 - Fact gathering should be allowed in ansible-playbook (By default)
 - The role require the superuser privileges. The task should be used with remote_user root or with a sudo/su grant
-
-## Role behavior
-
+- openssl package should be present on the remote host if using the self signed ssl certificate
 
 ## Role Variables
 
@@ -26,9 +30,22 @@ Modifiables variables and possible values are listed below :
 # Security
 haproxy_chroot: '/var/lib/haproxy'
 
+# SSL
+haproxy_generate_self_signed_cert: true         # Set to false in order to disable self signed ssl certificate generation in /etc/haproxy/ssl/combined.pem
+
 # User & Group for HAProxy
 haproxy_user:  haproxy
 haproxy_group: haproxy
+
+# Defaults
+haproxy_timeout_connect: 6000                   # Timeout connect
+haproxy_timeout_client:  60000                  # Timeout client
+haproxy_timeout_server:  60000                  # Timeout server
+
+# Logging
+haproxy_logrotate_period: daily                 # Logrotate rotation period, you can use all logrotate configuration (daily, weekly, ...)
+haproxy_logrotate_amount: 21                    # Logrotate amount of rotation to keep
+haproxy_logrotate_maxsize: '500M'               # Logrotate maximum size for log file before rotating
 
 # Custom errors pages
 haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
@@ -57,7 +74,6 @@ haproxy_backends_list: []
 ## Dependencies
 
 none
-
 
 ## Frontends Syntax
 
@@ -288,11 +304,15 @@ haproxy_backends_list:
 ```
 
 
-## ToDo
+## Miscellaneous
 
-- Manage SSL
-- Manage use_backend
-- Manage ACL
+This role generate by default a self signed certificate (for testing purposes or waiting for a real ssl certificate).
+    - Files are generated in `/etc/haproxy/ssl/`
+    - With selfsigned.crt as the certificate, selfsigned.key as the key and selfsigned as the combined file, wich is usefull for haproxy
+    - You can disable this generation by setting the variable haproxy_generate_self_signed_cert to false `haproxy_generate_self_signed_cert: false`
+
+Some customization can be done by overriding some variables present in defaults/main.yml like :
+- `haproxy_timeout_connect`, `haproxy_logrotate_period`, etc.
 
 ## License
 

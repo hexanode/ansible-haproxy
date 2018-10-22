@@ -7,19 +7,22 @@
 # Security
 haproxy_chroot: '/var/lib/haproxy'
 
+# SSL
+haproxy_generate_self_signed_cert: true         # Set to false in order to disable self signed ssl certificate generation in /etc/haproxy/ssl/combined.pem
+
 # User & Group for HAProxy
 haproxy_user:  haproxy
 haproxy_group: haproxy
 
 # Defaults
-haproxy_timeout_connect: 6000
-haproxy_timeout_client:  60000
-haproxy_timeout_server:  60000
+haproxy_timeout_connect: 6000                   # Timeout connect
+haproxy_timeout_client:  60000                  # Timeout client
+haproxy_timeout_server:  60000                  # Timeout server
 
 # Logging
-haproxy_logrotate_period: daily
-haproxy_logrotate_amount: 21
-haproxy_logrotate_maxsize: '500M'
+haproxy_logrotate_period: daily                 # Logrotate rotation period, you can use all logrotate configuration (daily, weekly, ...)
+haproxy_logrotate_amount: 21                    # Logrotate amount of rotation to keep
+haproxy_logrotate_maxsize: '500M'               # Logrotate maximum size for log file before rotating
 
 # Custom errors pages
 haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
