@@ -13,6 +13,7 @@ This software can manage, global configurations, statistic panel, frontends, bac
 ## Requirements
 
 Compliant with :
+- Debian 8 (Jessie)
 - Debian 9 (Stretch)
 
 Other:

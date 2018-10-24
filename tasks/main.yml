@@ -6,9 +6,8 @@
 # OS support verification
 - name: Check OS support
   fail:
-    msg: "Unsupported OS for docker role. Currently supported : Debian 9"
-  when: ansible_os_family != "Debian" and ansible_distribution_major_version == "9"
-  tags: always
+    msg: "Unsupported OS for haproxy role. Currently supported : Debian 8 & Debian 9"
+  when: ansible_os_family != "Debian" or ( ansible_distribution_major_version != "9" and ansible_distribution_major_version != "8" )
 
 # Install
 - name: Static import of install
