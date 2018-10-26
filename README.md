@@ -42,6 +42,7 @@ haproxy_group: haproxy
 haproxy_timeout_connect: 6000                   # Timeout connect
 haproxy_timeout_client:  60000                  # Timeout client
 haproxy_timeout_server:  60000                  # Timeout server
+haproxy_defaultdhparam:  2048                   # Default ssl dh parameter
 
 # Logging
 haproxy_logrotate_period: daily                 # Logrotate rotation period, you can use all logrotate configuration (daily, weekly, ...)
