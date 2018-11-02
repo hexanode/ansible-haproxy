@@ -26,8 +26,8 @@ global
 
 defaults
     log     global
-    mode    http
-    option  httplog
+    mode    tcp
+    option  tcplog
     option  dontlognull
     timeout connect {{ haproxy_timeout_connect }}
     timeout client  {{ haproxy_timeout_client }}
@@ -89,6 +89,8 @@ frontend {{ frontend.name }}
     {% endif -%}
 
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
+
+    option {%- if frontend.mode is not defined %} tcplog {%- else %} {{ frontend.mode }}log {% endif %}
 
     {% if frontend.options is defined -%}
     {% for option in frontend.options -%}
