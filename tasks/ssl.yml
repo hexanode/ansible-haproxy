@@ -20,7 +20,7 @@
 #
 # We use a simple way for now :
 - name: Generate a Self Signed OpenSSL certificate
-  shell: openssl req -x509 -newkey rsa:4096 -keyout selfsigned.key -out selfsigned.crt -days 1460 -nodes -subj '/CN=selfsigned' && cat selfsigned.crt selfsigned.key > selfsigned.pem
+  shell: openssl req -x509 -newkey rsa:4096 -keyout selfsigned.key -out selfsigned.crt -days 3650 -nodes -subj '/CN=selfsigned' && cat selfsigned.crt selfsigned.key > selfsigned.pem
   args:
     chdir: /etc/haproxy/ssl/
     creates: selfsigned.pem
