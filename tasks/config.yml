@@ -10,7 +10,7 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: 0750
 
 # Create HAProxy log directory
 - name: Create HAProxy log directory
@@ -19,14 +19,14 @@
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: 0750
 
 # Deploy HAProxy configuration
-- name: Deploy HAProxy configuration
+- name: Generate HAProxy configuration
   template:
     src: haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
-    mode: 0644
+    mode: 0640
     validate: 'haproxy -c -f %s -q'
   notify: Reload HAProxy
   tags: haproxy_configfile
@@ -36,7 +36,7 @@
   copy:
     src: errors/
     dest: /etc/haproxy/errors/
-    mode: 0644
+    mode: 0640
   notify: Reload HAProxy
   when: haproxy_custom_errors_pages
   tags: haproxy_errors_pages
@@ -48,4 +48,4 @@
     dest: /etc/logrotate.d/haproxy
     owner: root
     group: root
-    mode: 0644
+    mode: 0640

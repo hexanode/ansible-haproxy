@@ -23,7 +23,7 @@ haproxy_defaultdhparam:  2048                   # Default ssl dh parameter
 # Logging
 haproxy_logrotate_period: daily                 # Logrotate rotation period, you can use all logrotate configuration (daily, weekly, ...)
 haproxy_logrotate_amount: 21                    # Logrotate amount of rotation to keep
-haproxy_logrotate_maxsize: '500M'               # Logrotate maximum size for log file before rotating
+haproxy_logrotate_maxsize: '50M'                # Logrotate maximum size for log file before rotating
 
 # Custom errors pages
 haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
