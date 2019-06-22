@@ -21,6 +21,15 @@
     group: root
     mode: 0750
 
+# Deploy HAProxy Cert-List file
+- name: Generate HAProxy cert-list file
+  template:
+    src: crt-list.txt.j2
+    dest: /etc/haproxy/crt-list.txt
+    mode: 0640
+  notify: Reload HAProxy
+  tags: haproxy_configfile
+
 # Deploy HAProxy configuration
 - name: Generate HAProxy configuration
   template:

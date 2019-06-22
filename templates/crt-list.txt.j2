@@ -1,0 +1,4 @@
+{% for certificate in haproxy_crt_list %}
+{{ certificate.path }}{% if certificate.snifilter is defined %} {{ certificate.snifilter }}{% endif %}
+
+{% endfor %}

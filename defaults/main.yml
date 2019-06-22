@@ -47,3 +47,6 @@ haproxy_frontends_list: []
 
 # Backends
 haproxy_backends_list: []
+
+# Certificates list
+haproxy_crt_list: []

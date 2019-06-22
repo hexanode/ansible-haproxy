@@ -71,6 +71,9 @@ haproxy_frontends_list: []
 
 # Backends
 haproxy_backends_list: []
+
+# Certificates list
+haproxy_crt_list: []
 ```
 
 ## Dependencies
@@ -136,7 +139,7 @@ Here is a recap of all possible values for the bind dictionary :
 | address | Bind address |   false  |       *       | Single IP Address (* for any) |
 | port    | Bind port    |   true   |      none     | Port number (1-65535)         |
 | crt     | Enable SSL for this bind by defining crt | false | none | Absolute path to pem combined (certificate + key) file [crt](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt) |
-| crt_list | Enable SSL for this bind by defining crt_list | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) |
+| crt_list | Enable SSL for this bind by defining crt_list | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) Ansible generated is '/etc/haproxy/crt-list.txt' |
 
 Example :
 
@@ -148,6 +151,8 @@ bind: { address: '*', port: '80' }
 bind:
   - { address: '*', port: '80' }
   - { port: '443', crt: '/etc/haproxy/ssl/combined.pem' }
+  # or
+  - { port: '443', crt_list: '/etc/haproxy/crt-list.txt' }
 ```
 
 
@@ -251,6 +256,23 @@ Here is a recap of all possibles values for backend_server in backend_server_lis
 | port          | Port number of backend server                |   true   |        none         | Port number (1-65535) |
 | weight | Load is proportional to their weight relative to the sum of all weights | false | 1 | 0-256 [Weight](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.2-weight) |
 
+
+### Certificates list Syntax
+
+Here is a recap of all possibles values for haproxy_crt_list list. The haproxy_crt_list variable is a list of dictionary
+
+| Option    | Role                               | Required | Default value | Type   |
+|-----------|------------------------------------|:--------:|:-------------:|-----------------------------|
+| snifilter | sni filter                         |   true   |      none     | String |
+| path      | Path of certificate on remote host |   false  |      none     | [SNI Filter](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#5.1-crt-list) |
+
+Example :
+
+```
+haproxy_crt_list:
+  - { snifilter: 'app.example.com', path: '/etc/haproxy/ssl/example.com.pem' }
+  - { path: '/etc/haproxy/ssl/selfsigned.pem'}
+```
 
 ## Example Playbook
 
