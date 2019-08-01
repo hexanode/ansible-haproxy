@@ -47,7 +47,7 @@
     dest: /etc/haproxy/errors/
     mode: 0640
   notify: Reload HAProxy
-  when: haproxy_custom_errors_pages
+  when: haproxy_custom_errors_pages|bool
   tags: haproxy_errors_pages
 
 # Generate HAProxy logrotate config

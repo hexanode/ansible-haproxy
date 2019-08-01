@@ -17,7 +17,7 @@
 # SSL
 - name: Static import of ssl
   import_tasks: ssl.yml
-  when: haproxy_generate_self_signed_cert
+  when: haproxy_generate_self_signed_cert|bool
   tags: haproxy_ssl
 
 # Config
