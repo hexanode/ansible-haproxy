@@ -77,13 +77,13 @@ frontend {{ frontend.name }}
 
     {% if frontend.bind is mapping -%}
         bind {%- if frontend.bind.address is not defined %} * {%- else %} {{ frontend.bind.address }} {%- endif %}:{{ frontend.bind.port }}
-        {%- if frontend.bind.crt is defined %} ssl crt {{ frontend.bind.crt }} {% if ansible_distribution_major_version == '10' %}alpn h2,http/1.1{% endif %}{% endif %}
+        {%- if frontend.bind.crt is defined %} ssl crt {{ frontend.bind.crt }} {% if ansible_distribution_major_version == '10' and frontend.bind.http2_disable is defined and frontend.bind.disable_http2 %}alpn h2,http/1.1{% endif %}{% endif %}
 
     {% elif frontend.bind is iterable and frontend.bind is not string -%}
     {% for bind_item in frontend.bind -%}
         bind {%- if bind_item.address is not defined %} * {%- else %} {{ bind_item.address }} {%- endif %}:{{ bind_item.port }}
-        {%- if bind_item.crt is defined %} ssl crt {{ bind_item.crt }} {% if ansible_distribution_major_version == '10' %}alpn h2,http/1.1{% endif %}{% endif %}
-        {%- if bind_item.crt_list is defined %} ssl crt-list {{ bind_item.crt_list }} {% if ansible_distribution_major_version == '10' %}alpn h2,http/1.1{% endif %}{% endif %}
+        {%- if bind_item.crt is defined %} ssl crt {{ bind_item.crt }} {% if ansible_distribution_major_version == '10' and frontend.bind.disable_http2 is defined and frontend.bind.disable_http2 %}alpn h2,http/1.1{% endif %}{% endif %}
+        {%- if bind_item.crt_list is defined %} ssl crt-list {{ bind_item.crt_list }} {% if ansible_distribution_major_version == '10' and frontend.bind.disable_http2 is defined and frontend.bind.disable_http2 %}alpn h2,http/1.1{% endif %}{% endif %}
 
     {% endfor -%}
     {% endif -%}
