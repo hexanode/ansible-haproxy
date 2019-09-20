@@ -142,6 +142,9 @@ Here is a recap of all possible values for the bind dictionary :
 | crt     | Enable SSL for this bind by defining crt | false | none | Absolute path to pem combined (certificate + key) file [crt](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt) |
 | crt_list | Enable SSL for this bind by defining crt_list | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) Ansible generated is '/etc/haproxy/crt-list.txt' |
 
+**Note :**
+- On Debian 10, HAProxy 1.8 is used. So http2 is automaticaly deployed when port 443 is binded.
+
 Example :
 
 ```
