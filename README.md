@@ -15,6 +15,7 @@ This software can manage, global configurations, statistic panel, frontends, bac
 Compliant with :
 - Debian 8 (Jessie)
 - Debian 9 (Stretch)
+- Debian 10 (Buster)
 
 Other:
 - Fact gathering should be allowed in ansible-playbook (By default)
@@ -43,6 +44,7 @@ haproxy_timeout_connect: 6000                   # Timeout connect
 haproxy_timeout_client:  60000                  # Timeout client
 haproxy_timeout_server:  60000                  # Timeout server
 haproxy_defaultdhparam:  2048                   # Default ssl dh parameter
+haproxy_master_worker_mode: true                # Enable Master-worker mode. Only available with HAProxy 1.8 (on Debian 10)
 
 # Logging
 haproxy_logrotate_period: daily                 # Logrotate rotation period, you can use all logrotate configuration (daily, weekly, ...)
@@ -140,6 +142,10 @@ Here is a recap of all possible values for the bind dictionary :
 | port    | Bind port    |   true   |      none     | Port number (1-65535)         |
 | crt     | Enable SSL for this bind by defining crt | false | none | Absolute path to pem combined (certificate + key) file [crt](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt) |
 | crt_list | Enable SSL for this bind by defining crt_list | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) Ansible generated is '/etc/haproxy/crt-list.txt' |
+| disable_http2 | Disable HTTP/2 for this bind | false | false | Boolean |
+
+**Note :**
+- On Debian 10, HAProxy 1.8 is used. So HTTP/2 is automaticaly deployed when port 443 is binded. If you want to disable this default parameter, you can set true disable_http2
 
 Example :
 
