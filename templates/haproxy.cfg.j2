@@ -91,13 +91,19 @@ frontend {{ frontend.name }}
     {% endfor -%}
     {% endif -%}
 
-    mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {% endif %}
+    mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {%- endif %}
 
-    option {%- if frontend.mode is not defined %} tcplog {%- else %} {{ frontend.mode }}log {% endif %}
+    option {%- if frontend.mode is not defined %} tcplog {%- else %} {{ frontend.mode }}log {%- endif %}
 
     {% if frontend.options is defined -%}
     {% for option in frontend.options -%}
         option {{ option }}
+    {% endfor -%}
+    {% endif -%}
+
+    {% if frontend.timeouts is defined -%}
+    {% for option in frontend.timeouts -%}
+        timeout {{ option }}
     {% endfor -%}
     {% endif -%}
 
@@ -146,6 +152,12 @@ backend {{ backend.name }}
     {% if backend.options is defined -%}
     {% for option in backend.options -%}
         option {{ option }}
+    {% endfor -%}
+    {% endif -%}
+
+    {% if backend.timeouts is defined -%}
+    {% for option in backend.timeouts -%}
+        timeout {{ option }}
     {% endfor -%}
     {% endif -%}
 
