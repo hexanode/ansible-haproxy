@@ -45,6 +45,15 @@ haproxy_webstats_admin_opt: 'if FALSE'          # Manage admin level if/unless a
 # haproxy_webstats_scope: '.'                   # Scope for this webstat interface
 # haproxy_webstats_crt: '/path/to/crt.pem'      # Enable SSL by providing an absolute path to the combined certificate and key pem file
 
+# Web Stats for exporter
+haproxy_webstats_exporter: true                          # Set to false in order to disable webstats for local node exporter. (default is true)
+haproxy_webstats_exporter_ip: '127.0.0.1'                # Listening IP for the webstats interface
+haproxy_webstats_exporter_port: '8091'                   # Listening Port for the webstats interface
+haproxy_webstats_exporter_maxconn: '2'                   # Maximum per-process number of concurrent connections
+haproxy_webstats_exporter_username: 'nodeexporter'       # Authentication Username
+haproxy_webstats_exporter_password: 'DummyPassw0rd'      # Authentication Password
+haproxy_webstats_exporter_uri: '/stats'                  # Authentication URL
+
 # Frontends
 haproxy_frontends_list: []
 
