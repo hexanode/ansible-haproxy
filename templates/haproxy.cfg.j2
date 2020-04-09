@@ -72,6 +72,20 @@ listen stats
     stats uri  {{ haproxy_webstats_uri }}
 {% endif %}
 
+{% if haproxy_webstats_exporter -%}
+
+listen statsexporter
+    bind            {{ haproxy_webstats_exporter_ip }}:{{ haproxy_webstats_exporter_port }}
+    mode            http
+    log             global
+    maxconn         {{ haproxy_webstats_exporter_maxconn }}
+    stats enable
+    stats hide-version
+    stats show-node
+    stats auth {{ haproxy_webstats_exporter_username }}:{{ haproxy_webstats_exporter_password }}
+    stats uri {{ haproxy_webstats_exporter_uri }}
+{% endif %}
+
 {% for frontend in haproxy_frontends_list %}
 frontend {{ frontend.name }}
     {% if frontend.comment is defined -%}
