@@ -28,7 +28,7 @@ Available variables with defaults values are defined in `defaults/main.yml`.
 
 Modifiables variables and possible values are listed below :
 
-```
+```yaml
 # Security
 haproxy_chroot: '/var/lib/haproxy'
 
@@ -76,6 +76,8 @@ haproxy_backends_list: []
 
 # Certificates list
 haproxy_crt_list: []
+haproxy_crt_list_default_wildcard: true                 # Set to false in order to disable selfsigned certificate usage with wildcard * as SNI filter
+
 ```
 
 ## Dependencies
@@ -105,7 +107,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 
 The syntax is flexible, per example you can use the following syntax :
 
-```
+```yaml
 haproxy_frontends_list:
   - name: 'default'
     bind: { address: '*', port: '80' }
@@ -141,8 +143,8 @@ Here is a recap of all possible values for the bind dictionary :
 |---------|--------------|:--------:|:-------------:|-------------------------------|
 | address | Bind address |   false  |       *       | Single IP Address (* for any) |
 | port    | Bind port    |   true   |      none     | Port number (1-65535)         |
-| crt     | Enable SSL for this bind by defining crt | false | none | Absolute path to pem combined (certificate + key) file [crt](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt) |
-| crt_list | Enable SSL for this bind by defining crt_list | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) Ansible generated is '/etc/haproxy/crt-list.txt' |
+| ssl     | Enable SSL for this bind by creating a default crt-list file as '/etc/haproxy/crt-list.txt' |   false   |      true     | Boolean |
+| crt_list | Override default crt-list file when ssl option is set as true | false | none | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) |
 | disable_http2 | Disable HTTP/2 for this bind | false | false | Boolean |
 
 **Note :**
@@ -150,16 +152,14 @@ Here is a recap of all possible values for the bind dictionary :
 
 Example :
 
-```
+```yaml
 # Single dictionary :
 bind: { address: '*', port: '80' }
 
 # List of dictionary :
 bind:
   - { address: '*', port: '80' }
-  - { port: '443', crt: '/etc/haproxy/ssl/combined.pem' }
-  # or
-  - { port: '443', crt_list: '/etc/haproxy/crt-list.txt' }
+  - { port: '443', ssl: true }
 ```
 
 
@@ -184,7 +184,7 @@ Here is a recap of all possible values for haproxy_backends in haproxy_backends_
 
 The syntax is flexible, per example you can use the following syntax :
 
-```
+```yaml
 haproxy_backends_list:
   - name: 'www'
     comment: 'HTTP backend for my web app'
@@ -275,7 +275,7 @@ Here is a recap of all possibles values for haproxy_crt_list list. The haproxy_c
 
 Example :
 
-```
+```yaml
 haproxy_crt_list:
   - { snifilter: 'app.example.com', path: '/etc/haproxy/ssl/example.com.pem' }
   - { path: '/etc/haproxy/ssl/selfsigned.pem'}
@@ -287,7 +287,7 @@ How to use the role in your ansible playbook.
 
 **Playbook example**
 
-```
+```yaml
 - name: Playbook Task to install haproxy role
   hosts: all (Group of servers on which you want to install and configure haproxy)
   roles:
@@ -296,7 +296,7 @@ How to use the role in your ansible playbook.
 
 **Variables example**
 
-```
+```yaml
 haproxy_webstats: true                  # Enable webstats
 haproxy_webstats_admin_opt: 'if TRUE'   # Enable admin level for webstats interface
 
@@ -305,7 +305,7 @@ haproxy_frontends_list:
     mode: 'http'
     bind:
       - { address: '*', port: '80' }
-      - { port: '443', crt: '/etc/haproxy/ssl/combined.pem' }
+      - { port: '443', ssl: true, crt_list: '/etc/haproxy/my-custom-list.txt' }
     default_backend: 'www'
 
 haproxy_backends_list:

@@ -62,3 +62,4 @@ haproxy_backends_list: []
 
 # Certificates list
 haproxy_crt_list: []
+haproxy_crt_list_default_wildcard: true                 # Set to false in order to disable selfsigned certificate usage with wildcard * as SNI filter
