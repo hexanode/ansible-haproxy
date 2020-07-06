@@ -21,6 +21,22 @@
     group: root
     mode: 0750
 
+# Create HAProxy log directory
+- name: Create HAProxy crt-list directory
+  file:
+    path: /etc/haproxy/crt-list
+    state: directory
+    owner: root
+    group: root
+    mode: 0750
+
+# Check if SSL certificates exists in haproxy_crt_list
+- name: Check if SSL certificates exists in haproxy_crt_list
+  include_tasks: ssl_check_certlist.yml
+  tags: haproxy_ssl_check_certlist
+  with_items: "{{ haproxy_crt_list }}"
+  when: item is defined
+
 # Deploy HAProxy Cert-List file
 - name: Generate HAProxy cert-list file
   template:

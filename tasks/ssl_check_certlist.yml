@@ -1,0 +1,32 @@
+---
+
+# Copyright (c) 2018 Hexanode
+# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+# Check if certificate exists
+- name: Check if {{ item.path }} exists
+  stat:
+    path: "{{ item.path }}"
+  register: haproxy_ssl_cert
+  check_mode: no
+
+# Warning for unexisting certificate
+- name: Warning for unexisting certificate file
+  fail:
+    msg: "[WARNING] The certificate {{ item.path }} file doesn't exist."
+  when: >
+    (item.path is not defined) or
+    (not haproxy_ssl_cert.stat.exists|bool) or
+    (not haproxy_ssl_cert.stat.isreg|bool and not haproxy_ssl_cert.stat.islnk|bool)
+  ignore_errors: yes
+  check_mode: no
+
+# Append certificate to the list of existing SSL certificates
+- name: Append certificate to the list of existing SSL certificates
+  set_fact:
+    haproxy_existing_cert: "{{ haproxy_existing_cert|default([]) }} + [ '{{ haproxy_ssl_cert.stat.path }}' ]"
+  when:
+    - haproxy_ssl_cert.stat is defined
+    - haproxy_ssl_cert.stat.exists is defined and haproxy_ssl_cert.stat.exists|bool
+    - haproxy_ssl_cert.stat.isreg|bool or haproxy_ssl_cert.stat.islnk|bool
+  check_mode: no
