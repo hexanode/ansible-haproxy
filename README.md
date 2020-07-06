@@ -143,8 +143,7 @@ Here is a recap of all possible values for the bind dictionary :
 |---------|--------------|:--------:|:-------------:|-------------------------------|
 | address | Bind address |   false  |       *       | Single IP Address (* for any) |
 | port    | Bind port    |   true   |      none     | Port number (1-65535)         |
-| ssl     | Enable SSL for this bind by creating a default crt-list file as '/etc/haproxy/crt-list.txt' |   false   |      true     | Boolean |
-| crt_list | Override default crt-list file when ssl option is set as true | false | '/etc/haproxy/crt-list.txt' | Absolute path to a certificate list file [crt-list](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#crt-list) |
+| ssl     | Enable SSL for this bind using a default common crt-list file '/etc/haproxy/crt-list.txt' |   false   |      true     | Boolean |
 | disable_http2 | Disable HTTP/2 for this bind | false | false | Boolean |
 
 **Note :**
@@ -277,7 +276,9 @@ Example :
 
 ```yaml
 haproxy_crt_list:
-  - { snifilter: 'app.example.com', path: '/etc/haproxy/ssl/example.com.pem' }
+  - { snifilter: 'app.example.com', path: '/etc/haproxy/ssl/app.example.com.pem' }
+  - { snifilter: 'www.example.com example.com', path: '/etc/haproxy/ssl/example.com.pem' }
+  - { snifilter: '*.sub.example.com', path: '/etc/haproxy/ssl/wildcard-sub.example.com.pem' }
   - { path: '/etc/haproxy/ssl/selfsigned.pem'}
 ```
 
