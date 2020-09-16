@@ -100,7 +100,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | mode | Protocol used for the instance | false | tcp | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
 | options         | List of options                 |   false  |      none     | List (All options available for frontend) |
 | timeouts        | List of timeouts                |   false  |      none     | List (All timeouts available for frontend) |
-| default_backend | Default backend used            |   true   |      none     | String                              |
+| default_backend | Default backend used            |   false  |      none     | String                              |
 
 **Note :**
 - If you omit a value the default (if any) will be used.

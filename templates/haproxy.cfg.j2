@@ -144,7 +144,8 @@ frontend {{ frontend.name }}
     {% endfor -%}
     {% endif -%}
 
-    default_backend {{ frontend.default_backend }}
+    {% if frontend.default_backend is defined -%} default_backend {{ frontend.default_backend }} {%- endif %}
+
 
 {% endfor %}
 
