@@ -98,6 +98,7 @@ Here is a recap of all possible values for haproxy_frontends in haproxy_frontend
 | redirect | A list of redirect conf lines | false | none | [ACL](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-acl) |
 | use_backend | A list of use_backend conf lines | false | none | [ACL](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4.2-acl) |
 | mode | Protocol used for the instance | false | tcp | [Mode](https://cbonte.github.io/haproxy-dconv/1.8/configuration.html#4-mode) |
+| maxconn         | Maximal number of concurrent connections | false |    0    | Integer                             |
 | options         | List of options                 |   false  |      none     | List (All options available for frontend) |
 | timeouts        | List of timeouts                |   false  |      none     | List (All timeouts available for frontend) |
 | default_backend | Default backend used            |   false  |      none     | String                              |
