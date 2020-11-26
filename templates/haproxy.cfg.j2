@@ -15,6 +15,9 @@ global
     master-worker
     {% endif -%}
 
+    # Global Tuning
+    maxconn {{ haproxy_maxconn }}
+
     # Default SSL material locations
     ca-base /etc/ssl/certs
     crt-base /etc/ssl/private
@@ -105,6 +108,8 @@ frontend {{ frontend.name }}
     {% endif -%}
 
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {%- endif %}
+
+    {% if frontend.maxconn is defined -%} maxconn {{ frontend.maxconn }} {%- endif -%}
 
     option {%- if frontend.mode is not defined %} tcplog {%- else %} {{ frontend.mode }}log {%- endif %}
 

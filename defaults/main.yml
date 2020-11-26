@@ -16,6 +16,9 @@ haproxy_generate_self_signed_cert: true         # Set to false in order to disab
 haproxy_user:  haproxy
 haproxy_group: haproxy
 
+# Tuning
+haproxy_maxconn: 0                              # Global maximal number of concurrent connections that will be sent to this server (Default is 0)
+
 # Defaults
 haproxy_timeout_connect: 6000                   # Timeout connect
 haproxy_timeout_client:  60000                  # Timeout client
