@@ -109,7 +109,9 @@ frontend {{ frontend.name }}
 
     mode {%- if frontend.mode is not defined %} tcp {%- else %} {{ frontend.mode }} {%- endif %}
 
-    {% if frontend.maxconn is defined -%} maxconn {{ frontend.maxconn }} {%- endif -%}
+    {% if frontend.maxconn is defined -%}
+    maxconn {{ frontend.maxconn }}
+    {% endif -%}
 
     option {%- if frontend.mode is not defined %} tcplog {%- else %} {{ frontend.mode }}log {%- endif %}
 
