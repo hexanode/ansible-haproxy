@@ -21,7 +21,17 @@
     group: root
     mode: 0750
 
-# Create HAProxy log directory
+# Deploy HAProxy configuration
+- name: Generate HAProxy Rsyslog
+  template:
+    src: etc/rsyslog.d/49-haproxy.conf.j2
+    dest: /etc/rsyslog.d/49-haproxy.conf
+    mode: 0640
+    validate: 'rsyslogd -N1 -f %s'
+  notify: Reload HAProxy
+  tags: haproxy_configfile
+
+# Create HAProxy crt-list directory
 - name: Create HAProxy crt-list directory
   file:
     path: /etc/haproxy/crt-list
