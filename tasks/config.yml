@@ -27,7 +27,7 @@
     src: etc/rsyslog.d/49-haproxy.conf.j2
     dest: /etc/rsyslog.d/49-haproxy.conf
     mode: 0640
-    validate: 'rsyslogd -N1 -f %s'
+    #validate: 'rsyslogd -N1 -f /etc/rsyslog.conf'
   notify: Reload HAProxy
   tags: haproxy_configfile
 
@@ -50,7 +50,7 @@
 # Deploy HAProxy Cert-List file
 - name: Generate HAProxy cert-list file
   template:
-    src: crt-list.txt.j2
+    src: etc/haproxy/crt-list.txt.j2
     dest: /etc/haproxy/crt-list.txt
     mode: 0640
   notify: Reload HAProxy
@@ -59,7 +59,7 @@
 # Deploy HAProxy configuration
 - name: Generate HAProxy configuration
   template:
-    src: haproxy.cfg.j2
+    src: etc/haproxy/haproxy.cfg.j2
     dest: /etc/haproxy/haproxy.cfg
     mode: 0640
     validate: 'haproxy -c -f %s -q'
@@ -79,7 +79,7 @@
 # Generate HAProxy logrotate config
 - name: Generate HAProxy logrotate config
   template:
-    src: logrotate.j2
+    src: etc/logrotate.d/logrotate.j2
     dest: /etc/logrotate.d/haproxy
     owner: root
     group: root
