@@ -3,6 +3,17 @@
 # Copyright (c) 2018 Hexanode
 # GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
 
+- name: Install additionnal packages tools and monitoring
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+    install_recommends: no
+    cache_valid_time: 86400
+  vars:
+    packages:
+      - socat
+
 # Install HAProxy package from debian stable repository
 - name: Install required HAProxy package
   apt:
