@@ -34,6 +34,19 @@ haproxy_logrotate_maxsize: '50M'                # Logrotate maximum size for log
 # Custom errors pages
 haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
 
+# Admin socket
+haproxy_admin_socket_path: /run/haproxy/admin.sock # Admin socket path
+haproxy_admin_socket_mode: 660                  # Admin socket mode
+haproxy_admin_socket_level: admin               # Admin socket level
+
+# Monitoring socket
+haproxy_monitoring_socket: true                 # Set fo false in order to disable monitoring socket
+haproxy_monitoring_socket_path: /run/haproxy/monitoring.sock # Monitoring socket path
+haproxy_monitoring_socket_mode: 660             # Monitoring socket mode
+haproxy_monitoring_socket_level: user           # Monitoring socket level
+haproxy_monitoring_socket_user: root            # Monitoring socket user
+haproxy_monitoring_socket_group: monitoring     # Monitoring socket group
+
 # Web Stats
 haproxy_webstats: false                         # Set to true in order to enable webstats. (default is false)
 haproxy_webstats_ip: '0.0.0.0'                  # Listening IP for the webstats interface

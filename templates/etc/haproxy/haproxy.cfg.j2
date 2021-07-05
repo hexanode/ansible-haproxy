@@ -6,7 +6,10 @@ global
     {% if haproxy_chroot != '' -%}
         chroot {{ haproxy_chroot }}
     {% endif -%}
-    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats socket {{ haproxy_admin_socket_path }} mode {{ haproxy_admin_socket_mode }} level {{ haproxy_admin_socket_level }}
+    {% if haproxy_monitoring_socket -%}
+        stats socket {{ haproxy_monitoring_socket_path }} mode {{ haproxy_monitoring_socket_mode }} level {{ haproxy_monitoring_socket_level }} user {{ haproxy_monitoring_socket_user }} group {{ haproxy_monitoring_socket_group }}
+    {% endif -%}
     stats timeout 10s
     user {{ haproxy_user }}
     group {{ haproxy_group }}
