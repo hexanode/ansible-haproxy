@@ -130,15 +130,15 @@ frontend {{ frontend.name }}
     {% endfor -%}
     {% endif -%}
 
-    {% if frontend.custom is defined -%}
-    {% for custom in frontend.custom -%}
-        {{ custom }}
-    {% endfor -%}
-    {% endif -%}
-
     {% if frontend.acl is defined -%}
     {% for acl in frontend.acl -%}
         acl {{ acl }}
+    {% endfor -%}
+    {% endif -%}
+
+    {% if frontend.custom is defined -%}
+    {% for custom in frontend.custom -%}
+        {{ custom }}
     {% endfor -%}
     {% endif -%}
 
