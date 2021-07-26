@@ -6,11 +6,13 @@
 # OS support verification
 - name: Check OS support
   fail:
-    msg: "Unsupported OS for haproxy role. Currently supported : Debian 8 to 10"
+    msg: "Unsupported OS for haproxy role. Currently supported : Debian 8 to 11 included, Ubuntu 20"
   when: >
-    (ansible_distribution != 'Debian')
+    (ansible_distribution != 'Debian' and ansible_distribution != 'Ubuntu')
     or
-    (ansible_distribution == 'Debian' and (ansible_distribution_major_version is version('8', '<') or ansible_distribution_major_version is version('10', '>')))
+    (ansible_distribution == 'Debian' and (ansible_distribution_major_version is version('8', '<') or ansible_distribution_major_version is version('11', '>')))
+    or
+    (ansible_distribution == 'Ubuntu' and (ansible_distribution_major_version is version('20', '!=')))
 
 # Install
 - name: Static import of install
