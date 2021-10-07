@@ -35,9 +35,12 @@ global
 
 defaults
     log     global
-    mode    tcp
-    option  tcplog
+    mode    {{ haproxy_default_mode }}
+    option  {{ haproxy_default_mode + 'log' }}
     option  dontlognull
+    {% if haproxy_default_log_format is defined and haproxy_default_log_format|length > 0 -%}
+    log-format "{{ haproxy_default_log_format }}"
+    {% endif -%}
     timeout connect {{ haproxy_timeout_connect }}
     timeout client  {{ haproxy_timeout_client }}
     timeout server  {{ haproxy_timeout_server }}

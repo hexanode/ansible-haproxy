@@ -20,6 +20,8 @@ haproxy_group: haproxy
 haproxy_maxconn: 0                              # Global maximal number of concurrent connections that will be sent to this server (Default is 0)
 
 # Defaults
+haproxy_default_mode:    tcp                    # Default mode
+haproxy_default_log_format: ''                  # Default custom log format
 haproxy_timeout_connect: 6000                   # Timeout connect
 haproxy_timeout_client:  60000                  # Timeout client
 haproxy_timeout_server:  60000                  # Timeout server
