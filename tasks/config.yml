@@ -18,7 +18,7 @@
     path: /var/log/haproxy
     state: directory
     owner: root
-    group: root
+    group: adm
     mode: 0750
 
 # Deploy HAProxy Rsyslog configuration
