@@ -84,6 +84,47 @@ haproxy_crt_list_default_wildcard: true                 # Set to false in order 
 
 none
 
+## Userlists Syntax
+
+Here is a recap of all possible values in haproxy_userlists_list list.
+
+| Option          | Role                                          | Required | Default value | Type                                |
+|-----------------|-----------------------------------------------|:--------:|:-------------:|-------------------------------------|
+| name            | Userlist label                                 |   true   |      none     | String                              |
+| users           | A list of user and their associated passwords |   true   |      none     | List                                |
+
+### Userlist User Syntax
+
+Here is a recap of all possibles values for users list
+
+| Option            | Role                                         | Required | Default value       | Type             |
+|-------------------|----------------------------------------------|:--------:|:-------------------:|------------------|
+| username          | Username of the user to be authenticated     |   true   |        none         | String           |
+| password          | Password of the user to be authenticated     |   true   |        none         | String           |
+| insecure_password | Define if the password type is insecure      |   false  |        false        | Bool             |
+
+Example :
+
+```yaml
+haproxy_userlists_list:
+  - name: 'basic_auth_logins'
+    users:
+      - username: 'joe'
+        password: 'mypassword123'
+        insecure_password: true
+      - username: 'jane'
+        password: '$5$H66A9XpyCHfyPnIN$7EHpQZhICYVcWBq8vn2hePuM6GiZ/1njQnFs13Ymnk9'
+```
+
+will produce
+
+```
+userlist basic_auth_logins
+    user joe insecure-password mypassword123
+    user jane password $5$H66A9XpyCHfyPnIN$7EHpQZhICYVcWBq8vn2hePuM6GiZ/1njQnFs13Ymnk9
+```
+
+
 ## Frontends Syntax
 
 Here is a recap of all possible values for haproxy_frontends in haproxy_frontends_list.

@@ -72,6 +72,9 @@ haproxy_webstats_exporter_username: 'nodeexporter'       # Authentication Userna
 haproxy_webstats_exporter_password: 'DummyPassw0rd'      # Authentication Password
 haproxy_webstats_exporter_uri: '/stats'                  # Authentication URL
 
+# Authentication
+haproxy_userlists_list: []
+
 # Frontends
 haproxy_frontends_list: []
 
