@@ -95,6 +95,13 @@ listen statsexporter
     stats uri {{ haproxy_webstats_exporter_uri }}
 {% endif %}
 
+{% for userlist in haproxy_userlists_list %}
+userlist {{ userlist.name }}
+    {% for user in userlist.users -%}
+    user {{ user.username }} {{ 'insecure-password' if user.insecure_password is defined and user.insecure_password|bool else 'password' }} {{ user.password }}
+    {% endfor -%}
+{% endfor %}
+
 {% for frontend in haproxy_frontends_list %}
 frontend {{ frontend.name }}
     {% if frontend.comment is defined -%}
