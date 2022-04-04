@@ -65,8 +65,8 @@ haproxy_webstats_username: 'admin'              # Authentication Username
 haproxy_webstats_password: 'password'           # Authentication Password
 haproxy_webstats_uri: '/haproxy?stats'          # Authentication URL
 haproxy_webstats_admin_opt: 'if FALSE'          # Manage admin level if/unless a condition is matched (ex: if TRUE / if LOCALHOST)
+haproxy_webstats_crt: '/etc/haproxy/ssl/selfsigned.pem' # Disable SSL by providing 'null' or use an absolute path for a custom certificate combined file (cert & key)
 # haproxy_webstats_scope: '.'                   # Scope for this webstat interface
-# haproxy_webstats_crt: '/path/to/crt.pem'      # Enable SSL by providing an absolute path to the combined certificate and key pem file
 
 # Frontends
 haproxy_frontends_list: []
