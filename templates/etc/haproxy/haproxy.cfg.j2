@@ -55,7 +55,7 @@ defaults
 {% if haproxy_webstats -%}
 
 listen stats
-    bind            {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }} {%- if haproxy_webstats_crt is defined %} ssl crt {{ haproxy_webstats_crt }} {% endif %}
+    bind            {{ haproxy_webstats_ip }}:{{ haproxy_webstats_port }} {%- if haproxy_webstats_crt is not none %} ssl crt {{ haproxy_webstats_crt }} {% endif %}
 
     mode            http
     log             global
