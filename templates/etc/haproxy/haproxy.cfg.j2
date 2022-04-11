@@ -109,13 +109,19 @@ frontend {{ frontend.name }}
     {% endif -%}
 
     {% if frontend.bind is mapping -%}
-        bind {%- if frontend.bind.address is not defined %} * {%- else %} {{ frontend.bind.address }} {%- endif %}:{{ frontend.bind.port }}
-        {%- if frontend.bind.ssl is defined and frontend.bind.ssl %} ssl crt-list {{ frontend.bind.crt_list|default('/etc/haproxy/crt-list.txt') }} {% if ansible_distribution_major_version == '10' and (frontend.bind.disable_http2 is undefined or not frontend.bind.disable_http2|bool) %}alpn h2,http/1.1{% endif %}{% endif %}
+        {% if frontend.bind.version is not defined or frontend.bind.version == 4 %}bind {% if frontend.bind.address is defined %}{{ frontend.bind.address }}{% endif %}:{{ frontend.bind.port }}
+        {%- if frontend.bind.ssl is defined and frontend.bind.ssl %} ssl crt-list {{ frontend.bind.crt_list|default('/etc/haproxy/crt-list.txt') }} {% if ansible_distribution_major_version == '10' and (frontend.bind.disable_http2 is undefined or not frontend.bind.disable_http2|bool) %}alpn h2,http/1.1{% endif %}{% endif %}{% endif %}
+
+    {% if frontend.bind.version is not defined or frontend.bind.version == 6 %}bind {% if frontend.bind.address6 is defined %}{{ frontend.bind.address6 }}{% else %}[::]{% endif %}:{{ frontend.bind.port6|default(frontend.bind.port) }}
+        {%- if frontend.bind.ssl is defined and frontend.bind.ssl %} ssl crt-list {{ frontend.bind.crt_list|default('/etc/haproxy/crt-list.txt') }} {% if ansible_distribution_major_version == '10' and (frontend.bind.disable_http2 is undefined or not frontend.bind.disable_http2|bool) %}alpn h2,http/1.1{% endif %}{% endif %}{% endif %}
 
     {% elif frontend.bind is iterable and frontend.bind is not string -%}
     {% for bind_item in frontend.bind -%}
-        bind {%- if bind_item.address is not defined %} * {%- else %} {{ bind_item.address }} {%- endif %}:{{ bind_item.port }}
-        {%- if bind_item.ssl is defined and bind_item.ssl %} ssl crt-list {{ bind_item.crt_list|default('/etc/haproxy/crt-list.txt') }} {% if ansible_distribution_major_version == '10' and (frontend.bind.disable_http2 is undefined or not frontend.bind.disable_http2|bool) %}alpn h2,http/1.1{% endif %}{% endif %}
+        {% if bind_item.version is not defined or bind_item.version == 4 %}bind {% if bind_item.address is defined %}{{ bind_item.address }}{% endif %}:{{ bind_item.port }}
+        {%- if bind_item.ssl is defined and bind_item.ssl %} ssl crt-list {{ bind_item.crt_list|default('/etc/haproxy/crt-list.txt') }} {% if ansible_distribution_major_version == '10' and (bind_item.disable_http2 is undefined or not bind_item.disable_http2|bool) %}alpn h2,http/1.1{% endif %}{% endif %}{% endif %}
+
+    {% if bind_item.version is not defined or bind_item.version == 6 %}bind {% if bind_item.address6 is defined %}{{ bind_item.address6 }}{% else %}[::]{% endif %}:{{ bind_item.port6|default(bind_item.port) }}
+        {%- if bind_item.ssl is defined and bind_item.ssl %} ssl crt-list {{ bind_item.crt_list|default('/etc/haproxy/crt-list.txt') }} {% if ansible_distribution_major_version == '10' and (bind_item.disable_http2 is undefined or not bind_item.disable_http2|bool) %}alpn h2,http/1.1{% endif %}{% endif %}{% endif %}
 
     {% endfor -%}
     {% endif -%}
