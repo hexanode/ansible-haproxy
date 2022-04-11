@@ -26,60 +26,6 @@ Other:
 
 Available variables with defaults values are defined in `defaults/main.yml`.
 
-Modifiables variables and possible values are listed below :
-
-```yaml
-# Security
-haproxy_chroot: '/var/lib/haproxy'
-
-# SSL
-haproxy_generate_self_signed_cert: true         # Set to false in order to disable self signed ssl certificate generation in /etc/haproxy/ssl/combined.pem
-
-# User & Group for HAProxy
-haproxy_user:  haproxy
-haproxy_group: haproxy
-
-# Defaults
-haproxy_timeout_connect: 6000                   # Timeout connect
-haproxy_timeout_client:  60000                  # Timeout client
-haproxy_timeout_server:  60000                  # Timeout server
-haproxy_defaultdhparam:  2048                   # Default ssl dh parameter
-haproxy_master_worker_mode: true                # Enable Master-worker mode. Only available with HAProxy 1.8 (on Debian 10)
-
-# Logging
-haproxy_logrotate_period: daily                 # Logrotate rotation period, you can use all logrotate configuration (daily, weekly, ...)
-haproxy_logrotate_amount: 21                    # Logrotate amount of rotation to keep
-haproxy_logrotate_maxsize: '500M'               # Logrotate maximum size for log file before rotating
-
-# Custom errors pages
-haproxy_custom_errors_pages: true               # Set to false to disable copy of custom error pages
-
-# Web Stats
-haproxy_webstats: false                         # Set to true in order to enable webstats. (default is false)
-haproxy_webstats_ip: '0.0.0.0'                  # Listening IP for the webstats interface
-haproxy_webstats_port: '8080'                   # Listening Port for the webstats interface
-haproxy_webstats_maxconn: '10'                  # Maximum per-process number of concurrent connections
-haproxy_webstats_refreshtime: '30s'             # Enable automatic refresh with a delay
-haproxy_webstats_realm: 'HAProxy\ Statistics'   # Authentication Realm
-haproxy_webstats_username: 'admin'              # Authentication Username
-haproxy_webstats_password: 'password'           # Authentication Password
-haproxy_webstats_uri: '/haproxy?stats'          # Authentication URL
-haproxy_webstats_admin_opt: 'if FALSE'          # Manage admin level if/unless a condition is matched (ex: if TRUE / if LOCALHOST)
-haproxy_webstats_crt: '/etc/haproxy/ssl/selfsigned.pem' # Disable SSL by providing 'null' or use an absolute path for a custom certificate combined file (cert & key)
-# haproxy_webstats_scope: '.'                   # Scope for this webstat interface
-
-# Frontends
-haproxy_frontends_list: []
-
-# Backends
-haproxy_backends_list: []
-
-# Certificates list
-haproxy_crt_list: []
-haproxy_crt_list_default_wildcard: true                 # Set to false in order to disable selfsigned certificate usage with wildcard * as SNI filter
-
-```
-
 ## Dependencies
 
 none
@@ -152,11 +98,15 @@ The syntax is flexible, per example you can use the following syntax :
 ```yaml
 haproxy_frontends_list:
   - name: 'default'
-    bind: { address: '*', port: '80' }
+    bind:
+      port: 80
     default_backend: 'www'
   - name: 'example'
     mode: tcp
-    bind: { address: '93.184.216.34', port: '514' }
+    bind:
+      version: 4
+      address: '93.184.216.34'
+      port: 514
     default_backend: 'app'
 ```
 
@@ -164,13 +114,16 @@ This will be respectively translated to :
 
 ```
 frontend default
-    bind *:80
+    bind :80
+    bind [::]:80
     mode http
+    option httplog
     default_backend www
 
 frontend example
     bind 93.184.216.34:514
     mode tcp
+    option tcplog
     default_backend app
 ```
 
@@ -181,12 +134,13 @@ You can define bind parameters for haproxy frontends in two way a single diction
 
 Here is a recap of all possible values for the bind dictionary :
 
-| Option  | Role         | Required | Default value | Type                          |
-|---------|--------------|:--------:|:-------------:|-------------------------------|
-| address | Bind address |   false  |       *       | Single IP Address (* for any) |
-| port    | Bind port    |   true   |      none     | Port number (1-65535)         |
-| ssl     | Enable SSL for this bind using a default common crt-list file '/etc/haproxy/crt-list.txt' |   false   |      true     | Boolean |
-| disable_http2 | Disable HTTP/2 for this bind | false | false | Boolean |
+| Option  | Role         | Required | Default value | Type                                     |
+|---------|--------------|:--------:|:-------------:|------------------------------------------|
+| address | Bind address |   false  |   undefined   | Single IP Address undefined for all      |
+| version | IP version   |   false  |   undefined   | Int : 4 = IPv4, 6 = IPv6, undef for both |
+| port    | Bind port    |   true   |   undefined   | Port number (1-65535)                    |
+| ssl     | Enable SSL for this bind using a default common crt-list file '/etc/haproxy/crt-list.txt' | false | true | Boolean |
+| disable_http2 | Disable HTTP/2 for this bind | false | false | Boolean                       |
 
 **Note :**
 - On Debian 10, HAProxy 1.8 is used. So HTTP/2 is automaticaly deployed when port 443 is binded. If you want to disable this default parameter, you can set true disable_http2
@@ -195,12 +149,13 @@ Example :
 
 ```yaml
 # Single dictionary :
-bind: { address: '*', port: '80' }
+bind:
+  port: 80
 
 # List of dictionary :
 bind:
-  - { address: '*', port: '80' }
-  - { port: '443', ssl: true }
+  - { port: 80 }
+  - { port: 443, ssl: true }
 ```
 
 
@@ -347,8 +302,8 @@ haproxy_frontends_list:
   - name: 'default'
     mode: 'http'
     bind:
-      - { address: '*', port: '80' }
-      - { port: '443', ssl: true, crt_list: '/etc/haproxy/my-custom-list.txt' }
+      - { port: 80 }
+      - { port: 443, ssl: true, crt_list: '/etc/haproxy/my-custom-list.txt' }
     default_backend: 'www'
 
 haproxy_backends_list:
