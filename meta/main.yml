@@ -1,6 +1,6 @@
 galaxy_info:
   author: "Maximilien Douchet"
-  description: "Ansible role that install and configure HAProxy for Debian Jessie & Stretch"
+  description: "Ansible role that install and configure HAProxy"
   company: "Hexanode"
   license: "license GPLv3"
   min_ansible_version: 2.4
@@ -10,6 +10,11 @@ galaxy_info:
       versions:
         - stretch
         - jessie
+        - buster
+        - bullseye
+    - name: Ubuntu
+      versions:
+        - focal
   galaxy_tags:
     - debian
     - haproxy

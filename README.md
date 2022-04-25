@@ -16,6 +16,7 @@ Compliant with :
 - Debian 8 (Jessie)
 - Debian 9 (Stretch)
 - Debian 10 (Buster)
+- Debian 11 (Bullseye)
 
 Other:
 - Fact gathering should be allowed in ansible-playbook (By default)
