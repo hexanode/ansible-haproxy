@@ -16,6 +16,11 @@ haproxy_generate_self_signed_cert: true         # Set to false in order to disab
 haproxy_user:  haproxy
 haproxy_group: haproxy
 
+## Systemd tunning to restart automatically HAProxy service
+haproxy_system_restart_sec: 20s                                         # Set the time to sleep before restarting HAProxy service
+haproxy_system_start_limit_burst: 5                                     # Set the time interval span for the unit start rate limiting
+haproxy_system_start_limit_interval_sec: 500                            # Set the number of starts allowed during the time interval span
+
 # Tuning
 haproxy_maxconn: 0                              # Global maximal number of concurrent connections that will be sent to this server (Default is 0)
 

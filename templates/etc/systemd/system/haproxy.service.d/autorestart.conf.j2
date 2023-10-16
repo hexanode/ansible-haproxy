@@ -1,0 +1,7 @@
+[Unit]
+StartLimitIntervalSec={{ haproxy_system_start_limit_interval_sec }}
+StartLimitBurst={{ haproxy_system_start_limit_burst }}
+
+[Service]
+Restart=on-failure
+RestartSec={{ haproxy_system_restart_sec }}
